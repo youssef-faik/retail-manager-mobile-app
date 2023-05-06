@@ -7,4 +7,11 @@
     <string name="users_activity_label">Users</string>
     <string name="customers_activity_label">Customers</string>
     <string name="invoices_activity_label">Invoices</string>
+    <string name="product_name">Product Name</string>
+    <string name="add_new_product">Add New Product</string>
+    <string name="purchase_price">Purchase Price</string>
+    <string name="barcode">Barcode</string>
+    <string name="tax_rate">Tax Rate</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
