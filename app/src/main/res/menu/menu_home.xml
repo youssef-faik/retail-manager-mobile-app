@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/products"
+            android:icon="@drawable/products"
+            android:title="Products"/>
+        <item
+            android:id="@+id/customers"
+            android:icon="@drawable/customers"
+            android:title="Customers"/>
+        <item
+            android:id="@+id/invoices"
+            android:icon="@drawable/baseline_insert_drive_file_24"
+            android:title="Invoices"/>
+        <item
+            android:id="@+id/users"
+            android:icon="@drawable/users"
+            android:title="Users"/>
+    </group>
+</menu>

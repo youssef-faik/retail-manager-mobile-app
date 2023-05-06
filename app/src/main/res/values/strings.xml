@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">IBSYS Retail Manager</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="products_activity_label">Products</string>
+    <string name="users_activity_label">Users</string>
+    <string name="customers_activity_label">Customers</string>
+    <string name="invoices_activity_label">Invoices</string>
+</resources>
