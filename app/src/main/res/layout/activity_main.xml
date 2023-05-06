@@ -12,6 +12,7 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="160dp"
+        android:contentDescription="@string/company_logo"
         app:srcCompat="@drawable/logo" />
 
     <LinearLayout
@@ -20,38 +21,47 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email" />
+
         <EditText
             android:id="@+id/editTextTextEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:ems="10"
-            android:hint="Email"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
-            android:text="yusef@mail.com" />
+            android:text="@string/email_placeholder"
+            tools:ignore="Autofill,LabelFor,VisualLintTextFieldSize" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/password" />
 
         <EditText
             android:id="@+id/editTextTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:ems="10"
-            android:hint="Password"
             android:inputType="textPassword"
             android:minHeight="48dp"
-            android:text="secret-password" />
+            android:text="@string/password_placeholder"
+            tools:ignore="Autofill,LabelFor,VisualLintTextFieldSize" />
 
         <Button
             android:id="@+id/buttonLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:drawableLeft="@drawable/baseline_login_24"
             android:minHeight="48dp"
-            android:text="Login"
-            android:layout_gravity="center_horizontal"
-            android:textStyle="bold" />
+            android:text="@string/login"
+            android:textStyle="bold"
+            tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
 

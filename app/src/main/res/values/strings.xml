@@ -14,4 +14,10 @@
     <string name="tax_rate">Tax Rate</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="company_logo">company logo</string>
+    <string name="email_placeholder">yusef@mail.com</string>
+    <string name="password_placeholder">secret-password</string>
 </resources>
