@@ -20,4 +20,5 @@
     <string name="company_logo">company logo</string>
     <string name="email_placeholder">yusef@mail.com</string>
     <string name="password_placeholder">secret-password</string>
+    <string name="selling_price">Selling Price</string>
 </resources>

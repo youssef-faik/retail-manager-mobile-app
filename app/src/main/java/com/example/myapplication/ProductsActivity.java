@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.databinding.ActivityProductsBinding;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import io.swagger.client.ApiException;
@@ -56,6 +57,7 @@ public class ProductsActivity extends DrawerBaseActivity {
     // retrieve user input
     final EditText nameEditText = dialog.findViewById(R.id.name_edit_text);
     final EditText purchasePriceEditText = dialog.findViewById(R.id.purchase_price_edit_text);
+    final EditText sellingPriceEditText = dialog.findViewById(R.id.selling_price_edit_text);
     final EditText barcodeEditText = dialog.findViewById(R.id.barcode_edit_text);
     final Spinner spinnerTaxRate = dialog.findViewById(R.id.spinner_tax_rate);
 
@@ -86,6 +88,7 @@ public class ProductsActivity extends DrawerBaseActivity {
         String name = nameEditText.getText().toString().trim();
         String barcode = barcodeEditText.getText().toString().trim();
         String purchasePriceString = purchasePriceEditText.getText().toString().trim();
+        String sellingPriceString = sellingPriceEditText.getText().toString().trim();
 
         // Validate the input values
         boolean isValid = true;
@@ -93,10 +96,17 @@ public class ProductsActivity extends DrawerBaseActivity {
           nameEditText.setError("Product name is required");
           isValid = false;
         }
+
         if (TextUtils.isEmpty(purchasePriceString)) {
           purchasePriceEditText.setError("Product purchase price is required");
           isValid = false;
         }
+
+        if (TextUtils.isEmpty(sellingPriceString)) {
+          sellingPriceEditText.setError("Product selling price is required");
+          isValid = false;
+        }
+
         if (TextUtils.isEmpty(barcode)) {
           barcodeEditText.setError("Product barcode is required");
           isValid = false;
@@ -104,14 +114,28 @@ public class ProductsActivity extends DrawerBaseActivity {
 
         // If the input values are valid, save the product and dismiss the dialog
         if (isValid) {
-          // TODO: Save the product
+          // create
           double purchasePrice = Double.parseDouble(purchasePriceEditText.getText().toString());
+          double sellingPrice = Double.parseDouble(sellingPriceEditText.getText().toString());
           ProductRequestDto.TaxRateEnum taxRate = (ProductRequestDto.TaxRateEnum) spinnerTaxRate.getSelectedItem();
 
-          adapter.notifyDataSetChanged();
+          // Create the request body
+          ProductRequestDto productRequestDto = new ProductRequestDto();
+          productRequestDto.barCode(barcode);
+          productRequestDto.name(name);
+          productRequestDto.sellingPriceExcludingTax(BigDecimal.valueOf(sellingPrice));
+          productRequestDto.purchasePrice(BigDecimal.valueOf(purchasePrice));
+          productRequestDto.taxRate(taxRate);
+
+          // Perform API call to save the newly created product
+          new CreateProductTask().execute(productRequestDto);
+          dialog.dismiss();
+
+          // Refresh the the products ListView
+          new GetProductsTask().execute();
+
           Toast.makeText(ProductsActivity.this, "Product added successfully", Toast.LENGTH_SHORT).show();
 
-          dialog.dismiss();
         }
 
         // Enable the button
@@ -147,6 +171,20 @@ public class ProductsActivity extends DrawerBaseActivity {
         // Set the productAdapter for the ListView
         productList.setAdapter(productAdapter);
       }
+    }
+  }
+
+  private class CreateProductTask extends AsyncTask<ProductRequestDto, Void, Void> {
+    @Override
+    protected Void doInBackground(ProductRequestDto... productRequestDtos) {
+      ProductApi apiInstance = new ProductApi();
+      try {
+        apiInstance.createProduct(productRequestDtos[0]);
+      } catch (ApiException e) {
+        System.err.println("Exception when calling ProductApi#createProduct");
+        e.printStackTrace();
+      }
+      return null;
     }
   }
 
