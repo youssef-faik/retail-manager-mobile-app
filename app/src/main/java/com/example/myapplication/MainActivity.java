@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    // API IP Address
+    final String IP_ADDRESS = "172.26.192.1";
+
     // retrieve user input
     final EditText email = findViewById(R.id.editTextTextEmailAddress);
     final EditText password = findViewById(R.id.editTextTextPassword);
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                     body.setPassword(passwordTxt);
 
                     ApiClient defaultClient = Configuration.getDefaultApiClient();
-                    defaultClient.setBasePath("http://172.26.208.1:8080");
+                    defaultClient.setBasePath("http://" + IP_ADDRESS + ":8080");
 
                     AuthenticationApi apiInstance = new AuthenticationApi();
                     return apiInstance.authenticate(body);
