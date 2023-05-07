@@ -15,16 +15,16 @@ import android.widget.Toast;
 import com.example.myapplication.databinding.ActivityProductsBinding;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.ArrayList;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.ProductApi;
 import io.swagger.client.model.ProductRequestDto;
-import io.swagger.client.model.ProductResponseDto;
 
 public class ProductsActivity extends DrawerBaseActivity {
   ActivityProductsBinding activityProductsBinding;
   private ListView productList;
+  private ProductListAdapter productAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,12 @@ public class ProductsActivity extends DrawerBaseActivity {
     setContentView(activityProductsBinding.getRoot());
 
     productList = findViewById(R.id.ListViewProducts);
-    new GetProductsTask().execute();
+
+    // Create an instance of the ProductListAdapter
+    productAdapter = new ProductListAdapter(ProductsActivity.this, new ArrayList<>());
+
+    // Set the productAdapter for the ListView
+    productList.setAdapter(productAdapter);
 
     // Initialize your button and other views here
     Button addButton = findViewById(R.id.add_button_button);
@@ -132,7 +137,7 @@ public class ProductsActivity extends DrawerBaseActivity {
           dialog.dismiss();
 
           // Refresh the the products ListView
-          new GetProductsTask().execute();
+          productAdapter.refreshData();
 
           Toast.makeText(ProductsActivity.this, "Product added successfully", Toast.LENGTH_SHORT).show();
 
@@ -145,33 +150,6 @@ public class ProductsActivity extends DrawerBaseActivity {
     });
 
     dialog.show();
-  }
-
-
-  private class GetProductsTask extends AsyncTask<Void, Void, List<ProductResponseDto>> {
-
-    @Override
-    protected List<ProductResponseDto> doInBackground(Void... voids) {
-      ProductApi apiInstance = new ProductApi();
-      try {
-        return apiInstance.getAllProducts();
-      } catch (ApiException e) {
-        System.err.println("Exception when calling ProductApi#getAllCustomers");
-        e.printStackTrace();
-        return null;
-      }
-    }
-
-    @Override
-    protected void onPostExecute(List<ProductResponseDto> products) {
-      if (products != null) {
-        // Create an instance of the ProductListAdapter
-        ProductListAdapter productAdapter = new ProductListAdapter(ProductsActivity.this, products);
-
-        // Set the productAdapter for the ListView
-        productList.setAdapter(productAdapter);
-      }
-    }
   }
 
   private class CreateProductTask extends AsyncTask<ProductRequestDto, Void, Void> {

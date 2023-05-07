@@ -1,12 +1,14 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +16,8 @@ import androidx.appcompat.widget.PopupMenu;
 
 import java.util.List;
 
+import io.swagger.client.ApiException;
+import io.swagger.client.api.ProductApi;
 import io.swagger.client.model.ProductResponseDto;
 
 public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
@@ -24,6 +28,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
     super(activity, R.layout.product_list_item, products);
     this.activity = activity;
     this.products = products;
+    refreshData();
   }
 
   @NonNull
@@ -55,15 +60,72 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
       popupMenu.inflate(R.menu.product_options_menu);
       popupMenu.setOnMenuItemClickListener(item -> {
         int itemId = item.getItemId();
-        // Handle delete menu item click
-        if (itemId == R.id.updateProductMenuItem) {// Handle update menu item click
+        if (itemId == R.id.updateProductMenuItem) {
+          // Handle update menu item click
+
+          Toast.makeText(this.getContext(), "Product updated successfully", Toast.LENGTH_SHORT).show();
           return true;
-        } else return itemId == R.id.deleteProductMenuItem;
+
+        } else {
+          // Handle delete menu item click
+          new DeleteProductTask().execute(product.getId());
+          Toast.makeText(this.getContext(), "Product deleted successfully", Toast.LENGTH_SHORT).show();
+          return itemId == R.id.deleteProductMenuItem;
+        }
       });
       popupMenu.show();
     });
 
     return view;
   }
+
+  public void refreshData() {
+    new GetProductsTask().execute();
+  }
+
+  private class GetProductsTask extends AsyncTask<Void, Void, List<ProductResponseDto>> {
+    @Override
+    protected List<ProductResponseDto> doInBackground(Void... voids) {
+      ProductApi apiInstance = new ProductApi();
+      try {
+        return apiInstance.getAllProducts();
+      } catch (ApiException e) {
+        System.err.println("Exception when calling ProductApi#listProducts");
+        e.printStackTrace();
+        return null;
+      }
+    }
+
+    @Override
+    protected void onPostExecute(List<ProductResponseDto> products) {
+      if (products != null) {
+        clear();
+        addAll(products);
+        notifyDataSetChanged();
+      }
+    }
+  }
+
+  private class DeleteProductTask extends AsyncTask<Integer, Void, Void> {
+    @Override
+    protected Void doInBackground(Integer... integers) {
+      ProductApi apiInstance = new ProductApi();
+      try {
+        apiInstance.deleteProduct(integers[0]);
+      } catch (ApiException e) {
+        System.err.println("Exception when calling ProductApi#createProduct");
+        e.printStackTrace();
+      }
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+      super.onPostExecute(aVoid);
+      // Refresh the list of products after deleting a product
+      refreshData();
+    }
+  }
+
 }
 
