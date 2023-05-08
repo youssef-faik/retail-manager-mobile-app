@@ -1,52 +1,58 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.Configuration;
 import io.swagger.client.api.AuthenticationApi;
 import io.swagger.client.auth.OAuth;
 import io.swagger.client.model.AuthenticationRequest;
+import io.swagger.client.model.AuthenticationResponse;
 
 public class MainActivity extends AppCompatActivity {
+  private ProgressBar mProgressBar;
+  private Button loginBtn;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    // API IP Address
-    final String IP_ADDRESS = "172.26.192.1";
-
     // retrieve user input
     final EditText email = findViewById(R.id.editTextTextEmailAddress);
     final EditText password = findViewById(R.id.editTextTextPassword);
-    final Button loginBtn = findViewById(R.id.buttonLogin);
+    loginBtn = findViewById(R.id.buttonLogin);
 
     // Set click listener for login button
     loginBtn.setOnClickListener(new View.OnClickListener() {
       @SuppressLint("CheckResult")
       @Override
       public void onClick(View view) {
+        // Disable the login button
+        loginBtn.setEnabled(false);
+
         // Get the input values
         String emailTxt = email.getText().toString().trim();
         String passwordTxt = password.getText().toString().trim();
+
+        // Find the progress bar view by its ID
+        mProgressBar = findViewById(R.id.progressBar);
 
         // Validate the input values
         boolean isValid = true;
@@ -62,53 +68,102 @@ public class MainActivity extends AppCompatActivity {
 
         // If the input values are valid, try to sign in user
         if (isValid) {
+          loginBtn.setEnabled(false);
           // Perform API call for user authentication
-          Observable.fromCallable(() -> {
-                    // Perform network operation here
-                    AuthenticationRequest body = new AuthenticationRequest();
-                    body.setEmail(emailTxt);
-                    body.setPassword(passwordTxt);
+          AuthenticationRequest body = new AuthenticationRequest();
+          body.setEmail(emailTxt);
+          body.setPassword(passwordTxt);
 
-                    ApiClient defaultClient = Configuration.getDefaultApiClient();
-                    defaultClient.setBasePath("http://" + IP_ADDRESS + ":8080");
+          AuthenticateTask authenticateTask = new AuthenticateTask(getApplicationContext(), mProgressBar);
+          authenticateTask.execute(body);
 
-                    AuthenticationApi apiInstance = new AuthenticationApi();
-                    return apiInstance.authenticate(body);
-                  })
-                  .subscribeOn(Schedulers.io())
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe(result -> {
-                    // Handle the result here when success
-
-                    // Save JWT token in shared preferences
-                    SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString("token", result.getToken());
-                    editor.apply();
-
-                    OAuth bearer_authentication = (OAuth) Configuration.getDefaultApiClient().getAuthentication("Bearer_Authentication");
-                    bearer_authentication.setAccessToken(result.getToken());
-
-                    // Show home activity
-                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-                    startActivity(intent);
-                    finish();
-
-                  }, error -> {
-                    // Handle the error here
-                    System.err.println("Exception when calling AuthenticationApi#authenticate");
-                    System.out.println(((ApiException) error).getResponseBody());
-
-                    JSONObject json = new JSONObject(((ApiException) error).getResponseBody());
-                    String message = "Error : " + json.getString("message");
-
-                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-                  });
         }
       }
     });
 
   }
+
+  private class AuthenticateTask extends AsyncTask<AuthenticationRequest, Void, AuthenticationResponse> {
+    public final ProgressBar mProgressBar;
+    // API IP Address
+    final String IP_ADDRESS = "192.168.1.100";
+    private final Context mContext;
+    String errorMessage = "An error occurred while processing your request";
+
+    public AuthenticateTask(Context context, ProgressBar progressBar) {
+      mContext = context;
+      mProgressBar = progressBar;
+    }
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected AuthenticationResponse doInBackground(AuthenticationRequest... authenticationRequests) {
+      ApiClient defaultClient = Configuration.getDefaultApiClient();
+      defaultClient.setBasePath("http://" + IP_ADDRESS + ":8080");
+
+      AuthenticationApi apiInstance = new AuthenticationApi();
+      try {
+        return apiInstance.authenticate(authenticationRequests[0]);
+      } catch (ApiException e) {
+        // Handle the error here
+        // Retrieve the error message
+        try {
+          if (e.getResponseBody() != null) {
+            JSONObject json = new JSONObject(e.getResponseBody());
+            errorMessage = "Error : " + json.getString("message");
+          }
+        } catch (JSONException ex) {
+          throw new RuntimeException(ex);
+        }
+
+        // Log the error details
+        System.err.println("Exception when calling AuthenticationApi#authenticate");
+        System.out.println("ResponseBody : " + errorMessage);
+        e.printStackTrace();
+
+        // display toast with the error message
+        runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            Toast.makeText(mContext, errorMessage, Toast.LENGTH_SHORT).show();
+          }
+        });
+      } catch (Exception e) {
+        runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+          }
+        });
+      }
+
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(AuthenticationResponse authenticationResponse) {
+      // Handle the result here
+      if (authenticationResponse != null) {
+        // Save JWT token in shared preferences
+        OAuth bearer_authentication = (OAuth) Configuration.getDefaultApiClient().getAuthentication("Bearer_Authentication");
+        bearer_authentication.setAccessToken(authenticationResponse.getToken());
+
+        // Show DashboardActivity
+        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+        finish();
+        startActivity(intent);
+      }
+      mProgressBar.setVisibility(View.GONE);
+      loginBtn.setEnabled(true);
+    }
+
+  }
+
 }
 
 

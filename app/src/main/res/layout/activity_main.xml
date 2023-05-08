@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -62,7 +62,16 @@
             android:text="@string/login"
             android:textStyle="bold"
             tools:ignore="RtlHardcoded" />
-
     </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:visibility="invisible"
+            android:layout_marginTop="32dp"
+            style="@style/Widget.Material3.CircularProgressIndicator.ExtraSmall"/>
 
 </LinearLayout>
