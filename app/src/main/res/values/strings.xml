@@ -21,4 +21,7 @@
     <string name="email_placeholder">yusef@mail.com</string>
     <string name="password_placeholder">secret-password</string>
     <string name="selling_price">Selling Price</string>
+    <string name="delete">Delete</string>
+    <string name="delete_product_confirmation">Delete product confirmation</string>
+    <string name="do_you_really_want_to_delete_this_product">Do you really want to delete this product?</string>
 </resources>

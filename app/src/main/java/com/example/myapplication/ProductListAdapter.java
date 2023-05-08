@@ -74,8 +74,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
 
         } else {
           // Handle delete menu item click
-          new DeleteProductTask().execute(product.getId());
-          Toast.makeText(this.getContext(), "Product deleted successfully", Toast.LENGTH_SHORT).show();
+          showDeleteProductDialog(product);
           return itemId == R.id.deleteProductMenuItem;
         }
       });
@@ -205,6 +204,40 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
     new GetProductsTask().execute();
   }
 
+  private void showDeleteProductDialog(ProductResponseDto product) {
+    final Dialog dialog = new Dialog(getContext());
+    dialog.getWindow().setBackgroundDrawableResource(R.drawable.listview_background);
+    dialog.setContentView(R.layout.delete_product);
+
+    Button cancelButton = dialog.findViewById(R.id.button_cancel);
+    cancelButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        dialog.dismiss();
+      }
+    });
+
+    Button deleteButton = dialog.findViewById(R.id.button_delete);
+    deleteButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Disable the button
+        deleteButton.setEnabled(false);
+
+        // Perform API call to delete this product
+        new DeleteProductTask().execute(product.getId());
+        Toast.makeText(getContext(), "Product deleted successfully", Toast.LENGTH_SHORT).show();
+        dialog.dismiss();
+
+        // Enable the button
+        deleteButton.setEnabled(true);
+
+      }
+    });
+
+    dialog.show();
+  }
+
   private class GetProductsTask extends AsyncTask<Void, Void, List<ProductResponseDto>> {
     @Override
     protected List<ProductResponseDto> doInBackground(Void... voids) {
@@ -262,6 +295,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
       refreshData();
     }
   }
+
 
 }
 
