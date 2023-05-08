@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.product;
 
 import android.app.Dialog;
 import android.os.AsyncTask;
@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.myapplication.DrawerBaseActivity;
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityProductsBinding;
 
 import java.math.BigDecimal;

@@ -18,19 +18,19 @@
             android:name=".DrawerBaseActivity"
             android:exported="false" />
         <activity
-            android:name=".InvoicesActivity"
+            android:name=".invoice.InvoicesActivity"
             android:exported="false"
             android:label="@string/invoices_activity_label" />
         <activity
-            android:name=".CustomersActivity"
+            android:name=".customer.CustomersActivity"
             android:exported="false"
             android:label="@string/customers_activity_label" />
         <activity
-            android:name=".UsersActivity"
+            android:name=".user.UsersActivity"
             android:exported="false"
             android:label="@string/users_activity_label" />
         <activity
-            android:name=".ProductsActivity"
+            android:name=".product.ProductsActivity"
             android:exported="false"
             android:label="@string/products_activity_label" />
         <activity
@@ -39,7 +39,7 @@
             android:label="@string/title_activity_dashboard"
             android:theme="@style/Theme.MyApplication" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -26,14 +26,14 @@ import io.swagger.client.model.AuthenticationRequest;
 import io.swagger.client.model.AuthenticationResponse;
 import io.swagger.client.model.UserCreateDto;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
   private ProgressBar mProgressBar;
   private Button loginBtn;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    setContentView(R.layout.activity_login);
 
     // retrieve user input
     final EditText email = findViewById(R.id.editTextTextEmailAddress);
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
           bearer_authentication.setAccessToken(authenticationResponse.getToken());
 
           // Show DashboardActivity
-          Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+          Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
           finish();
           startActivity(intent);
         } else {

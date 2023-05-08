@@ -1,7 +1,8 @@
-package com.example.myapplication;
+package com.example.myapplication.user;
 
 import android.os.Bundle;
 
+import com.example.myapplication.DrawerBaseActivity;
 import com.example.myapplication.databinding.ActivityUsersBinding;
 
 public class UsersActivity extends DrawerBaseActivity {

@@ -1,7 +1,8 @@
-package com.example.myapplication;
+package com.example.myapplication.invoice;
 
 import android.os.Bundle;
 
+import com.example.myapplication.DrawerBaseActivity;
 import com.example.myapplication.databinding.ActivityInvoicesBinding;
 
 public class InvoicesActivity extends DrawerBaseActivity {

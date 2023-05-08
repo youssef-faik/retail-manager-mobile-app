@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.product;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -17,6 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
+
+import com.example.myapplication.R;
 
 import java.math.BigDecimal;
 import java.util.List;
