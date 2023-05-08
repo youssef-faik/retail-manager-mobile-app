@@ -24,6 +24,7 @@ import io.swagger.client.api.AuthenticationApi;
 import io.swagger.client.auth.OAuth;
 import io.swagger.client.model.AuthenticationRequest;
 import io.swagger.client.model.AuthenticationResponse;
+import io.swagger.client.model.UserCreateDto;
 
 public class MainActivity extends AppCompatActivity {
   private ProgressBar mProgressBar;
@@ -149,17 +150,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostExecute(AuthenticationResponse authenticationResponse) {
       // Handle the result here
       if (authenticationResponse != null) {
-        // Save JWT token in shared preferences
-        OAuth bearer_authentication = (OAuth) Configuration.getDefaultApiClient().getAuthentication("Bearer_Authentication");
-        bearer_authentication.setAccessToken(authenticationResponse.getToken());
+        if (authenticationResponse.getRole().equalsIgnoreCase(String.valueOf(UserCreateDto.RoleEnum.ADMIN))
+                || authenticationResponse.getRole().equalsIgnoreCase(String.valueOf(UserCreateDto.RoleEnum.MANAGER))
 
-        // Show DashboardActivity
-        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-        finish();
-        startActivity(intent);
+        ) {
+          // Save JWT token in shared preferences
+          OAuth bearer_authentication = (OAuth) Configuration.getDefaultApiClient().getAuthentication("Bearer_Authentication");
+          bearer_authentication.setAccessToken(authenticationResponse.getToken());
+
+          // Show DashboardActivity
+          Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+          finish();
+          startActivity(intent);
+        } else {
+          runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+              Toast.makeText(mContext, "You don't have permission to use the application", Toast.LENGTH_SHORT).show();
+            }
+          });
+        }
+
       }
       mProgressBar.setVisibility(View.GONE);
       loginBtn.setEnabled(true);
+
     }
 
   }
