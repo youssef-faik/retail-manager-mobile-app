@@ -66,10 +66,10 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
     Button optionsButton = view.findViewById(R.id.optionsButton);
     optionsButton.setOnClickListener(v -> {
       PopupMenu popupMenu = new PopupMenu(activity, v);
-      popupMenu.inflate(R.menu.product_options_menu);
+      popupMenu.inflate(R.menu.item_options_menu);
       popupMenu.setOnMenuItemClickListener(item -> {
         int itemId = item.getItemId();
-        if (itemId == R.id.updateProductMenuItem) {
+        if (itemId == R.id.updateMenuItem) {
           // Handle update menu item click
           showUpdateProductDialog(product);
           return true;
@@ -77,7 +77,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
         } else {
           // Handle delete menu item click
           showDeleteProductDialog(product);
-          return itemId == R.id.deleteProductMenuItem;
+          return itemId == R.id.deleteMenuItem;
         }
       });
       popupMenu.show();

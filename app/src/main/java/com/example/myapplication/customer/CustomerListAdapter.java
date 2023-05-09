@@ -64,10 +64,10 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
     Button optionsButton = view.findViewById(R.id.optionsButton);
     optionsButton.setOnClickListener(v -> {
       PopupMenu popupMenu = new PopupMenu(activity, v);
-      popupMenu.inflate(R.menu.customer_options_menu);
+      popupMenu.inflate(R.menu.item_options_menu);
       popupMenu.setOnMenuItemClickListener(item -> {
         int itemId = item.getItemId();
-        if (itemId == R.id.updateCustomerMenuItem) {
+        if (itemId == R.id.updateMenuItem) {
           // Handle update menu item click
           showUpdateCustomerDialog(customer);
           return true;
@@ -75,7 +75,7 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
         } else {
           // Handle delete menu item click
           showDeleteCustomerDialog(customer);
-          return itemId == R.id.deleteCustomerMenuItem;
+          return itemId == R.id.deleteMenuItem;
         }
       });
       popupMenu.show();
