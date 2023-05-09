@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:drawableLeft="@drawable/baseline_add_white_24"
+            android:drawableLeft="@drawable/ic_add_white"
             android:minHeight="48dp"
             android:text="Add customer"
             android:textStyle="bold" />
@@ -30,7 +30,7 @@
         android:layout_marginHorizontal="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="64dp"
-        android:background="@drawable/listview_background"
+        android:background="@drawable/shape_listview_background"
         android:dividerHeight="1dp"
         android:elevation="2dp"
         android:listSelector="@color/cardview_shadow_start_color" />

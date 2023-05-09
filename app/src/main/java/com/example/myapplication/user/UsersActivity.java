@@ -56,8 +56,8 @@ public class UsersActivity extends DrawerBaseActivity {
 
   private void showAddUserDialog() {
     final Dialog dialog = new Dialog(this);
-    dialog.getWindow().setBackgroundDrawableResource(R.drawable.listview_background);
-    dialog.setContentView(R.layout.new_user_dialog);
+    dialog.getWindow().setBackgroundDrawableResource(R.drawable.shape_listview_background);
+    dialog.setContentView(R.layout.dialog_new_user);
 
     // retrieve user input
     final EditText firstNameEditText = dialog.findViewById(R.id.first_name_edit_text);

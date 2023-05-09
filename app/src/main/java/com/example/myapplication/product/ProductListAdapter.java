@@ -34,7 +34,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
   private final Activity activity;
 
   public ProductListAdapter(Activity activity, List<ProductResponseDto> products) {
-    super(activity, R.layout.product_list_item, products);
+    super(activity, R.layout.list_item_product, products);
     this.activity = activity;
     this.products = products;
     refreshData();
@@ -46,7 +46,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
     View view = convertView;
     if (view == null) {
       LayoutInflater inflater = activity.getLayoutInflater();
-      view = inflater.inflate(R.layout.product_list_item, null);
+      view = inflater.inflate(R.layout.list_item_product, null);
     }
 
     // Get the product at the current position
@@ -66,7 +66,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
     Button optionsButton = view.findViewById(R.id.optionsButton);
     optionsButton.setOnClickListener(v -> {
       PopupMenu popupMenu = new PopupMenu(activity, v);
-      popupMenu.inflate(R.menu.item_options_menu);
+      popupMenu.inflate(R.menu.menu_item_options);
       popupMenu.setOnMenuItemClickListener(item -> {
         int itemId = item.getItemId();
         if (itemId == R.id.updateMenuItem) {
@@ -88,8 +88,8 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
 
   private void showUpdateProductDialog(ProductResponseDto product) {
     final Dialog dialog = new Dialog(getContext());
-    dialog.getWindow().setBackgroundDrawableResource(R.drawable.listview_background);
-    dialog.setContentView(R.layout.new_product_dialog);
+    dialog.getWindow().setBackgroundDrawableResource(R.drawable.shape_listview_background);
+    dialog.setContentView(R.layout.dialog_new_product);
     final TextView titleEditText = dialog.findViewById(R.id.dialog_title);
     titleEditText.setText("Update Product");
 
@@ -208,8 +208,12 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
 
   private void showDeleteProductDialog(ProductResponseDto product) {
     final Dialog dialog = new Dialog(getContext());
-    dialog.getWindow().setBackgroundDrawableResource(R.drawable.listview_background);
-    dialog.setContentView(R.layout.delete_product);
+    dialog.getWindow().setBackgroundDrawableResource(R.drawable.shape_listview_background);
+    dialog.setContentView(R.layout.dialog_delete);
+    TextView deleteDialogTitle = dialog.findViewById(R.id.dialog_title);
+    TextView deleteDialogMessage = dialog.findViewById(R.id.dialog_message);
+    deleteDialogTitle.setText("Delete Product Confirmation");
+    deleteDialogMessage.setText("Do you really want to delete this product?");
 
     Button cancelButton = dialog.findViewById(R.id.button_cancel);
     cancelButton.setOnClickListener(new View.OnClickListener() {

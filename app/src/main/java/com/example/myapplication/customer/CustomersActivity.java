@@ -56,8 +56,8 @@ public class CustomersActivity extends DrawerBaseActivity {
 
   private void showAddCustomerDialog() {
     final Dialog dialog = new Dialog(this);
-    dialog.getWindow().setBackgroundDrawableResource(R.drawable.listview_background);
-    dialog.setContentView(R.layout.new_customer_dialog);
+    dialog.getWindow().setBackgroundDrawableResource(R.drawable.shape_listview_background);
+    dialog.setContentView(R.layout.dialog_new_customer);
 
     // retrieve user input
     final EditText nameEditText = dialog.findViewById(R.id.name_edit_text);

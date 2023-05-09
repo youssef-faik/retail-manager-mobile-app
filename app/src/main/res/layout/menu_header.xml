@@ -9,6 +9,6 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/img_app_logo" />
 
 </LinearLayout>

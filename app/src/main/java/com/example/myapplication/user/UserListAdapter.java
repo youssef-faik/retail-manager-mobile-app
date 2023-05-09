@@ -33,7 +33,7 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
   private final Activity activity;
 
   public UserListAdapter(Activity activity, List<UserDto> users) {
-    super(activity, R.layout.user_list_item, users);
+    super(activity, R.layout.list_item_user, users);
     this.activity = activity;
     this.users = users;
     refreshData();
@@ -45,7 +45,7 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
     View view = convertView;
     if (view == null) {
       LayoutInflater inflater = activity.getLayoutInflater();
-      view = inflater.inflate(R.layout.user_list_item, null);
+      view = inflater.inflate(R.layout.list_item_user, null);
     }
 
     // Get the user at the current position
@@ -65,7 +65,7 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
     Button optionsButton = view.findViewById(R.id.optionsButton);
     optionsButton.setOnClickListener(v -> {
       PopupMenu popupMenu = new PopupMenu(activity, v);
-      popupMenu.inflate(R.menu.item_options_menu);
+      popupMenu.inflate(R.menu.menu_item_options);
       popupMenu.setOnMenuItemClickListener(item -> {
         int itemId = item.getItemId();
         if (itemId == R.id.updateMenuItem) {
@@ -87,8 +87,8 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
 
   private void showUpdateUserDialog(UserDto user) {
     final Dialog dialog = new Dialog(getContext());
-    dialog.getWindow().setBackgroundDrawableResource(R.drawable.listview_background);
-    dialog.setContentView(R.layout.update_user_dialog);
+    dialog.getWindow().setBackgroundDrawableResource(R.drawable.shape_listview_background);
+    dialog.setContentView(R.layout.dialog_update_user);
 
     // retrieve user input
     final EditText firstNameEditText = dialog.findViewById(R.id.first_name_edit_text);
@@ -192,11 +192,11 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
 
   private void showDeleteUserDialog(UserDto user) {
     final Dialog dialog = new Dialog(getContext());
-    dialog.getWindow().setBackgroundDrawableResource(R.drawable.listview_background);
-    dialog.setContentView(R.layout.delete_product);
+    dialog.getWindow().setBackgroundDrawableResource(R.drawable.shape_listview_background);
+    dialog.setContentView(R.layout.dialog_delete);
     TextView deleteDialogTitle = dialog.findViewById(R.id.dialog_title);
     TextView deleteDialogMessage = dialog.findViewById(R.id.dialog_message);
-    deleteDialogTitle.setText("Delete user confirmation");
+    deleteDialogTitle.setText("Delete User Confirmation");
     deleteDialogMessage.setText("Do you really want to delete this user?");
 
     Button cancelButton = dialog.findViewById(R.id.button_cancel);

@@ -6,6 +6,13 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="61dp"
+        android:layout_height="61dp"
+        android:background="@drawable/ic_corporate"
+        android:layout_marginRight="8dp"/>
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -20,13 +27,13 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/priceTextView"
+            android:id="@+id/phoneTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/barcodeTextView"
+            android:id="@+id/emailTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp" />
@@ -38,10 +45,10 @@
         android:id="@+id/optionsButton"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginVertical="10dp"
         android:background="@drawable/ic_more_vert"
-        android:contentDescription="@string/app_name"
         android:onClick="showOptionsMenu"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 </LinearLayout>

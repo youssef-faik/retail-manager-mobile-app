@@ -3,23 +3,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/dashboard"
-            android:icon="@drawable/baseline_dashboard_24"
+            android:icon="@drawable/ic_dashboard"
             android:title="Dashboard"/>
         <item
             android:id="@+id/products"
-            android:icon="@drawable/products"
+            android:icon="@drawable/ic_product"
             android:title="Products"/>
         <item
             android:id="@+id/customers"
-            android:icon="@drawable/customers"
+            android:icon="@drawable/ic_corporate"
             android:title="Customers"/>
         <item
             android:id="@+id/invoices"
-            android:icon="@drawable/baseline_insert_drive_file_24"
+            android:icon="@drawable/ic_invoice"
             android:title="Invoices"/>
         <item
             android:id="@+id/users"
-            android:icon="@drawable/users"
+            android:icon="@drawable/ic_user"
             android:title="Users"/>
     </group>
 </menu>

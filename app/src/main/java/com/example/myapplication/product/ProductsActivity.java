@@ -57,8 +57,8 @@ public class ProductsActivity extends DrawerBaseActivity {
 
   private void showAddProductDialog() {
     final Dialog dialog = new Dialog(this);
-    dialog.getWindow().setBackgroundDrawableResource(R.drawable.listview_background);
-    dialog.setContentView(R.layout.new_product_dialog);
+    dialog.getWindow().setBackgroundDrawableResource(R.drawable.shape_listview_background);
+    dialog.setContentView(R.layout.dialog_new_product);
     dialog.setTitle("Add New Product");
 
     // retrieve user input
