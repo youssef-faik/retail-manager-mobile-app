@@ -48,7 +48,11 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
 
     int id = item.getItemId();
 
-    if (id == R.id.products) {
+    if (id == R.id.dashboard) {
+      startActivity(new Intent(this, DashboardActivity.class));
+      overridePendingTransition(0, 0);
+      return true;
+    } else if (id == R.id.products) {
       startActivity(new Intent(this, ProductsActivity.class));
       overridePendingTransition(0, 0);
       return true;
