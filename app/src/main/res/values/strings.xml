@@ -24,4 +24,5 @@
     <string name="delete">Delete</string>
     <string name="delete_product_confirmation">Delete product confirmation</string>
     <string name="do_you_really_want_to_delete_this_product">Do you really want to delete this product?</string>
+    <string name="address">Address</string>
 </resources>
