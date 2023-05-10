@@ -5,22 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingTop="64dp"
     android:weightSum="3"
     tools:context=".LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            app:srcCompat="@drawable/img_app_logo"
-            android:importantForAccessibility="no" />
+            android:layout_width="wrap_content"
+            android:layout_height="231dp"
+            android:layout_gravity="center_horizontal"
+            android:importantForAccessibility="no"
+            app:srcCompat="@drawable/img_app_logo" />
     </LinearLayout>
 
     <LinearLayout
@@ -73,14 +74,36 @@
             tools:ignore="RtlHardcoded" />
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Widget.Material3.CircularProgressIndicator.ExtraSmall"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_marginTop="32dp"
-        android:indeterminate="true"
-        android:visibility="invisible" />
+        android:gravity="top"
+        android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.Material3.CircularProgressIndicator.ExtraSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:indeterminate="true"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:text="@string/copyright"
+            android:textColor="#A1A1A1"
+            android:textStyle="italic" />
+    </LinearLayout>
 </LinearLayout>

@@ -24,4 +24,5 @@
     <string name="address">Address</string>
     <string name="dialog_message">dialog message</string>
     <string name="dialog_title">dialog title</string>
+    <string name="copyright">© 2023 IBSYS SARL.</string>
 </resources>
