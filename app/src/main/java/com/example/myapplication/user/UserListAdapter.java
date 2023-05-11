@@ -1,7 +1,11 @@
 package com.example.myapplication.user;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 
+import com.example.myapplication.LoginActivity;
 import com.example.myapplication.R;
 
 import java.util.List;
@@ -96,6 +101,16 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
     final EditText emailEditText = dialog.findViewById(R.id.email_edit_text);
     final Spinner spinnerRole = dialog.findViewById(R.id.spinner_user_role);
 
+    // Get a reference to the SharedPreferences object
+    SharedPreferences prefs = activity.getSharedPreferences("myPrefs", MODE_PRIVATE);
+    String currentUserEmail = prefs.getString("email", "");
+
+    if (currentUserEmail.equalsIgnoreCase(user.getEmail())) {
+      final TextView updateEmailWarningTextView = dialog.findViewById(R.id.updateEmailWarningTextView);
+      updateEmailWarningTextView.setVisibility(View.VISIBLE);
+    }
+
+
     UserDto.RoleEnum[] roleEnums = UserDto.RoleEnum.values();
     ArrayAdapter<UserDto.RoleEnum> adapter = new ArrayAdapter<>(
             getContext(),
@@ -170,12 +185,24 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
           UpdateUserTask updateUserTask = new UpdateUserTask();
           updateUserTask.execute(userUpdateDto, user.getId());
 
+          Toast.makeText(getContext(), "User updated successfully", Toast.LENGTH_SHORT).show();
+
+          if (currentUserEmail.equalsIgnoreCase(user.getEmail()) && !userUpdateDto.getEmail().equalsIgnoreCase(user.getEmail())) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("token", "");
+            editor.putString("role", "");
+            editor.apply();
+
+            Intent intent = new Intent(activity, LoginActivity.class);
+            activity.startActivity(intent);
+            activity.finish();
+          }
+
           dialog.dismiss();
 
           // Refresh the the products ListView
           refreshData();
 
-          Toast.makeText(getContext(), "User updated successfully", Toast.LENGTH_SHORT).show();
         }
 
         // Enable the button

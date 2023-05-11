@@ -154,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
           SharedPreferences.Editor editor = prefs.edit();
           editor.putString("token", authenticationResponse.getToken());
           editor.putString("role", authenticationResponse.getRole());
+          editor.putString("email", authenticationResponse.getEmail());
           editor.apply();
 
           // Set JWT token for default ApiClient
