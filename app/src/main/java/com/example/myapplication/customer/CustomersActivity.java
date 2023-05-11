@@ -1,7 +1,6 @@
 package com.example.myapplication.customer;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.DrawerBaseActivity;
@@ -28,6 +29,8 @@ public class CustomersActivity extends DrawerBaseActivity {
   ActivityCustomersBinding activityCustomersBinding;
   private ListView customerList;
   private CustomerListAdapter customerAdapter;
+  private ProgressBar mProgressBar;
+  private TextView textViewAvailable;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +39,11 @@ public class CustomersActivity extends DrawerBaseActivity {
     setContentView(activityCustomersBinding.getRoot());
 
     customerList = findViewById(R.id.ListViewCustomers);
+    mProgressBar = findViewById(R.id.fetchingProgressBar);
+    textViewAvailable = findViewById(R.id.textViewAvailable);
 
     // Create an instance of the CustomerListAdapter
-    customerAdapter = new CustomerListAdapter(CustomersActivity.this, new ArrayList<>());
+    customerAdapter = new CustomerListAdapter(CustomersActivity.this, new ArrayList<>(), mProgressBar, textViewAvailable);
 
     customerList.setAdapter(customerAdapter);
 
@@ -122,20 +127,13 @@ public class CustomersActivity extends DrawerBaseActivity {
           customerRequestDto.address(addressString);
 
           // Perform API call to save the newly created customer
-          CreateCustomerTask createCustomerTask = new CreateCustomerTask(getApplicationContext());
-          createCustomerTask.execute(customerRequestDto);
+          new CreateCustomerTask().execute(customerRequestDto);
 
           dialog.dismiss();
-
-          // Refresh the the customers ListView
-          customerAdapter.refreshData();
-
-          Toast.makeText(CustomersActivity.this, "Customer added successfully", Toast.LENGTH_SHORT).show();
         }
 
         // Enable the button
         saveButton.setEnabled(true);
-
       }
     });
 
@@ -143,12 +141,7 @@ public class CustomersActivity extends DrawerBaseActivity {
   }
 
   private class CreateCustomerTask extends AsyncTask<CustomerRequestDto, Void, Void> {
-    private final Context mContext;
     String errorMessage = "An error occurred while processing your request";
-
-    public CreateCustomerTask(Context context) {
-      mContext = context;
-    }
 
     @Override
     protected Void doInBackground(CustomerRequestDto... customerRequestDtos) {
@@ -176,7 +169,7 @@ public class CustomersActivity extends DrawerBaseActivity {
         runOnUiThread(new Runnable() {
           @Override
           public void run() {
-            Toast.makeText(mContext, errorMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(CustomersActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
           }
         });
 
@@ -184,7 +177,14 @@ public class CustomersActivity extends DrawerBaseActivity {
       }
       return null;
     }
-  }
 
+    @Override
+    protected void onPostExecute(Void aVoid) {
+      super.onPostExecute(aVoid);
+      // Refresh the the customers ListView
+      customerAdapter.refreshData();
+      Toast.makeText(CustomersActivity.this, "Customer added successfully", Toast.LENGTH_SHORT).show();
+    }
+  }
 
 }

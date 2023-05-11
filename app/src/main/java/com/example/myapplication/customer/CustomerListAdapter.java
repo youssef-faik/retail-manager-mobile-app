@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +30,15 @@ import io.swagger.client.model.CustomerResponseDto;
 public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
   private final List<CustomerResponseDto> customers;
   private final Activity activity;
+  public ProgressBar mProgressBar;
+  public TextView mTextViewAvailable;
 
-
-  public CustomerListAdapter(Activity activity, List<CustomerResponseDto> customers) {
+  public CustomerListAdapter(Activity activity, List<CustomerResponseDto> customers, ProgressBar progressBar, TextView textViewAvailable) {
     super(activity, R.layout.list_item_customer, customers);
     this.activity = activity;
     this.customers = customers;
+    mProgressBar = progressBar;
+    mTextViewAvailable = textViewAvailable;
     refreshData();
   }
 
@@ -71,7 +75,6 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
           // Handle update menu item click
           showUpdateCustomerDialog(customer);
           return true;
-
         } else {
           // Handle delete menu item click
           showDeleteCustomerDialog(customer);
@@ -163,14 +166,10 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
           updateCustomerTask.execute(customerRequestDto, customer.getId());
 
           dialog.dismiss();
-
-          Toast.makeText(getContext(), "Customer updated successfully", Toast.LENGTH_SHORT).show();
-
         }
 
         // Enable the button
         saveButton.setEnabled(true);
-
       }
     });
 
@@ -221,6 +220,13 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
 
   private class GetCustomersTask extends AsyncTask<Void, Void, List<CustomerResponseDto>> {
     @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      mProgressBar.setVisibility(View.VISIBLE);
+      mTextViewAvailable.setVisibility(View.GONE);
+    }
+
+    @Override
     protected List<CustomerResponseDto> doInBackground(Void... voids) {
       CustomerApi apiInstance = new CustomerApi();
       try {
@@ -238,6 +244,14 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
         clear();
         addAll(customers);
         notifyDataSetChanged();
+
+        if (customers.isEmpty()) {
+          mTextViewAvailable.setVisibility(View.VISIBLE);
+        }
+      }
+      mProgressBar.setVisibility(View.GONE);
+      if (customers == null) {
+        mTextViewAvailable.setVisibility(View.VISIBLE);
       }
     }
   }
@@ -260,6 +274,7 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
       super.onPostExecute(aVoid);
       // Refresh the list of customers after updating a customer
       refreshData();
+      Toast.makeText(activity, "Customer updated successfully", Toast.LENGTH_SHORT);
     }
   }
 
@@ -279,8 +294,9 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
     @Override
     protected void onPostExecute(Void aVoid) {
       super.onPostExecute(aVoid);
-      // Refresh the list of products after deleting a product
+      // Refresh the list of customers after deleting a customer
       refreshData();
+      Toast.makeText(activity, "Customer deleted successfully", Toast.LENGTH_SHORT).show();
     }
   }
 
