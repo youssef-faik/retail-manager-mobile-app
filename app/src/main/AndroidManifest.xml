@@ -35,18 +35,18 @@
             android:label="@string/products_activity_label" />
         <activity
             android:name=".DashboardActivity"
-            android:exported="false"
-            android:label="@string/dashboard_activity_label"
-            android:theme="@style/Theme.MyApplication" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/dashboard_activity_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>

@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -19,6 +21,9 @@ import com.example.myapplication.user.UsersActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
+
+import io.swagger.client.Configuration;
+import io.swagger.client.auth.OAuth;
 
 public class DrawerBaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
   DrawerLayout drawerLayout;
@@ -71,5 +76,36 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     }
 
     return false;
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_main, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    int id = item.getItemId();
+
+    if (id == R.id.action_logout) {
+      // Save JWT token in shared preferences
+      SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
+      SharedPreferences.Editor editor = prefs.edit();
+      editor.putString("token", "");
+      editor.apply();
+
+      // Set JWT token for default ApiClient
+      OAuth bearer_authentication = (OAuth) Configuration.getDefaultApiClient().getAuthentication("Bearer_Authentication");
+      bearer_authentication.setAccessToken("");
+
+      // Show DashboardActivity
+      Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+      finish();
+      startActivity(intent);
+      return true;
+    }
+
+    return super.onOptionsItemSelected(item);
   }
 }

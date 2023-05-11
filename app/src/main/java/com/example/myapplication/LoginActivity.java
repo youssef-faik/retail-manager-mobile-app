@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.Configuration;
 import io.swagger.client.api.AuthenticationApi;
@@ -86,8 +86,6 @@ public class LoginActivity extends AppCompatActivity {
 
   private class AuthenticateTask extends AsyncTask<AuthenticationRequest, Void, AuthenticationResponse> {
     public final ProgressBar mProgressBar;
-    // API IP Address
-    final String IP_ADDRESS = "192.168.1.100";
     private final Context mContext;
     String errorMessage = "An error occurred while processing your request";
 
@@ -104,9 +102,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected AuthenticationResponse doInBackground(AuthenticationRequest... authenticationRequests) {
-      ApiClient defaultClient = Configuration.getDefaultApiClient();
-      defaultClient.setBasePath("http://" + IP_ADDRESS + ":8080");
-
       AuthenticationApi apiInstance = new AuthenticationApi();
       try {
         return apiInstance.authenticate(authenticationRequests[0]);
@@ -155,6 +150,12 @@ public class LoginActivity extends AppCompatActivity {
 
         ) {
           // Save JWT token in shared preferences
+          SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
+          SharedPreferences.Editor editor = prefs.edit();
+          editor.putString("token", authenticationResponse.getToken());
+          editor.apply();
+
+          // Set JWT token for default ApiClient
           OAuth bearer_authentication = (OAuth) Configuration.getDefaultApiClient().getAuthentication("Bearer_Authentication");
           bearer_authentication.setAccessToken(authenticationResponse.getToken());
 
