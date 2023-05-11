@@ -42,6 +42,14 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     NavigationView navigationView = drawerLayout.findViewById(R.id.navigation_view);
     navigationView.setNavigationItemSelectedListener(this);
 
+    // Get a reference to the SharedPreferences object
+    SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
+    String role = prefs.getString("role", "");
+
+    if (role.equalsIgnoreCase("manager")) {
+      navigationView.getMenu().removeItem(R.id.users);
+    }
+
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
     drawerLayout.addDrawerListener(toggle);
     toggle.syncState();
@@ -89,10 +97,11 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     int id = item.getItemId();
 
     if (id == R.id.action_logout) {
-      // Save JWT token in shared preferences
+      // Delete JWT token & user role from shared preferences
       SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
       SharedPreferences.Editor editor = prefs.edit();
       editor.putString("token", "");
+      editor.putString("role", "");
       editor.apply();
 
       // Set JWT token for default ApiClient

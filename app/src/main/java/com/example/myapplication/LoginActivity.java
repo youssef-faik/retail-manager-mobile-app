@@ -153,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
           SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
           SharedPreferences.Editor editor = prefs.edit();
           editor.putString("token", authenticationResponse.getToken());
+          editor.putString("role", authenticationResponse.getRole());
           editor.apply();
 
           // Set JWT token for default ApiClient

@@ -22,10 +22,8 @@ public class DashboardActivity extends DrawerBaseActivity {
     activityDashboardBinding = ActivityDashboardBinding.inflate(getLayoutInflater());
     setContentView(activityDashboardBinding.getRoot());
 
-    // Save IP_ADDRESS in shared preferences
-    SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
-
     // Get a reference to the SharedPreferences object
+    SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
     String token = prefs.getString("token", "");
 
     ApiClient defaultClient = Configuration.getDefaultApiClient();
