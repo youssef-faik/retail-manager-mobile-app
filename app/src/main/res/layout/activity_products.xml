@@ -9,19 +9,49 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="8dp">
 
-        <Button
-            android:id="@+id/add_button_button"
+        <LinearLayout
             android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/fetchingProgressBar"
+                style="@style/Widget.Material3.CircularProgressIndicator.ExtraSmall"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:indeterminate="true"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:drawableLeft="@drawable/ic_add_white"
-            android:minHeight="48dp"
-            android:text="Add product"
-            android:textStyle="bold" />
+            android:gravity="right">
+
+            <Button
+                android:id="@+id/add_button_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_add_white"
+                android:minHeight="48dp"
+                android:text="Add product"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewAvailable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:text="No available product."
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/ListViewProducts"

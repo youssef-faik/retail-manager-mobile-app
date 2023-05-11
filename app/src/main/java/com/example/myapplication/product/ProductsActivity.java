@@ -9,7 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.DrawerBaseActivity;
@@ -27,6 +29,8 @@ public class ProductsActivity extends DrawerBaseActivity {
   ActivityProductsBinding activityProductsBinding;
   private ListView productList;
   private ProductListAdapter productAdapter;
+  private ProgressBar mProgressBar;
+  private TextView textViewAvailable;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +39,11 @@ public class ProductsActivity extends DrawerBaseActivity {
     setContentView(activityProductsBinding.getRoot());
 
     productList = findViewById(R.id.ListViewProducts);
+    mProgressBar = findViewById(R.id.fetchingProgressBar);
+    textViewAvailable = findViewById(R.id.textViewAvailable);
 
     // Create an instance of the ProductListAdapter
-    productAdapter = new ProductListAdapter(ProductsActivity.this, new ArrayList<>());
+    productAdapter = new ProductListAdapter(ProductsActivity.this, new ArrayList<>(), mProgressBar, textViewAvailable);
 
     // Set the productAdapter for the ListView
     productList.setAdapter(productAdapter);
@@ -137,17 +143,10 @@ public class ProductsActivity extends DrawerBaseActivity {
           // Perform API call to save the newly created product
           new CreateProductTask().execute(productRequestDto);
           dialog.dismiss();
-
-          // Refresh the the products ListView
-          productAdapter.refreshData();
-
-          Toast.makeText(ProductsActivity.this, "Product added successfully", Toast.LENGTH_SHORT).show();
-
         }
 
         // Enable the button
         saveButton.setEnabled(true);
-
       }
     });
 
@@ -165,6 +164,14 @@ public class ProductsActivity extends DrawerBaseActivity {
         e.printStackTrace();
       }
       return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+      super.onPostExecute(aVoid);
+      // Refresh the the products ListView
+      productAdapter.refreshData();
+      Toast.makeText(ProductsActivity.this, "Product added successfully", Toast.LENGTH_SHORT).show();
     }
   }
 

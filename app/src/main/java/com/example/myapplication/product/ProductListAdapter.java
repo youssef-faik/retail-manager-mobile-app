@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,11 +33,15 @@ import io.swagger.client.model.ProductResponseDto;
 public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
   private final List<ProductResponseDto> products;
   private final Activity activity;
+  public ProgressBar mProgressBar;
+  public TextView mTextViewAvailable;
 
-  public ProductListAdapter(Activity activity, List<ProductResponseDto> products) {
+  public ProductListAdapter(Activity activity, List<ProductResponseDto> products, ProgressBar progressBar, TextView textViewAvailable) {
     super(activity, R.layout.list_item_product, products);
     this.activity = activity;
     this.products = products;
+    mProgressBar = progressBar;
+    mTextViewAvailable = textViewAvailable;
     refreshData();
   }
 
@@ -185,17 +190,10 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
           updateProductTask.execute(productRequestDto, product.getId());
 
           dialog.dismiss();
-
-          // Refresh the the products ListView
-          refreshData();
-
-          Toast.makeText(getContext(), "Product updated successfully", Toast.LENGTH_SHORT).show();
-
         }
 
         // Enable the button
         saveButton.setEnabled(true);
-
       }
     });
 
@@ -232,12 +230,10 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
 
         // Perform API call to delete this product
         new DeleteProductTask().execute(product.getId());
-        Toast.makeText(getContext(), "Product deleted successfully", Toast.LENGTH_SHORT).show();
         dialog.dismiss();
 
         // Enable the button
         deleteButton.setEnabled(true);
-
       }
     });
 
@@ -245,6 +241,13 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
   }
 
   private class GetProductsTask extends AsyncTask<Void, Void, List<ProductResponseDto>> {
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      mProgressBar.setVisibility(View.VISIBLE);
+      mTextViewAvailable.setVisibility(View.GONE);
+    }
+
     @Override
     protected List<ProductResponseDto> doInBackground(Void... voids) {
       ProductApi apiInstance = new ProductApi();
@@ -263,6 +266,14 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
         clear();
         addAll(products);
         notifyDataSetChanged();
+
+        if (products.isEmpty()) {
+          mTextViewAvailable.setVisibility(View.VISIBLE);
+        }
+      }
+      mProgressBar.setVisibility(View.GONE);
+      if (products == null) {
+        mTextViewAvailable.setVisibility(View.VISIBLE);
       }
     }
   }
@@ -278,6 +289,14 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
         e.printStackTrace();
       }
       return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+      super.onPostExecute(aVoid);
+      // Refresh the list of products
+      refreshData();
+      Toast.makeText(activity, "Product updated successfully", Toast.LENGTH_SHORT).show();
     }
   }
 
@@ -299,9 +318,9 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
       super.onPostExecute(aVoid);
       // Refresh the list of products after deleting a product
       refreshData();
+      Toast.makeText(activity, "Product deleted successfully", Toast.LENGTH_SHORT).show();
     }
   }
-
 
 }
 
