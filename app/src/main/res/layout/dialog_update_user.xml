@@ -14,14 +14,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="32dp"
-        android:text="Update User"
+        android:text="@string/update_user"
         android:textSize="24sp"
         android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="First Name" />
+        android:text="@string/first_name" />
 
     <EditText
         android:id="@+id/first_name_edit_text"
@@ -34,7 +34,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Last Name" />
+        android:text="@string/last_name" />
 
     <EditText
         android:id="@+id/last_name_edit_text"
@@ -60,7 +60,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Role" />
+        android:text="@string/role" />
 
     <Spinner
         android:id="@+id/spinner_user_role"
@@ -68,10 +68,22 @@
         android:layout_height="wrap_content"
         android:minHeight="48dp" />
 
+    <TextView
+        android:id="@+id/updateEmailWarningTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        android:text="@string/modifying_user_email_warning"
+        android:textAlignment="center"
+        app:drawableLeftCompat="@android:drawable/stat_sys_warning"
+        app:drawableTint="#FFCC80" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:gravity="center">
 
         <Button
@@ -88,15 +100,5 @@
             android:text="@string/save" />
 
     </LinearLayout>
-    <TextView
-        android:id="@+id/updateEmailWarningTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginTop="8dp"
-        android:drawableTint="#FFCA28"
-        android:visibility="gone"
-        android:text="Modifying the email address of the current user results in a sign-out."
-        android:textAlignment="center"
-        app:drawableLeftCompat="@android:drawable/stat_sys_warning" />
+
 </LinearLayout>

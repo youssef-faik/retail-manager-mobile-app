@@ -25,4 +25,9 @@
     <string name="dialog_message">dialog message</string>
     <string name="dialog_title">dialog title</string>
     <string name="copyright">© 2023 IBSYS SARL.</string>
+    <string name="modifying_user_email_warning">Modifying the email address of the current user results in a sign-out.</string>
+    <string name="update_user">Update User</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="role">Role</string>
 </resources>
