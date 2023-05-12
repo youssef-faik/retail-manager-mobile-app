@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,11 +37,15 @@ import io.swagger.client.model.UserUpdateDto;
 public class UserListAdapter extends ArrayAdapter<UserDto> {
   private final List<UserDto> users;
   private final Activity activity;
+  public ProgressBar mProgressBar;
+  public TextView mTextViewAvailable;
 
-  public UserListAdapter(Activity activity, List<UserDto> users) {
+  public UserListAdapter(Activity activity, List<UserDto> users, ProgressBar progressBar, TextView textViewAvailable) {
     super(activity, R.layout.list_item_user, users);
     this.activity = activity;
     this.users = users;
+    mProgressBar = progressBar;
+    mTextViewAvailable = textViewAvailable;
     refreshData();
   }
 
@@ -109,7 +114,6 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
       final TextView updateEmailWarningTextView = dialog.findViewById(R.id.updateEmailWarningTextView);
       updateEmailWarningTextView.setVisibility(View.VISIBLE);
     }
-
 
     UserDto.RoleEnum[] roleEnums = UserDto.RoleEnum.values();
     ArrayAdapter<UserDto.RoleEnum> adapter = new ArrayAdapter<>(
@@ -185,8 +189,6 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
           UpdateUserTask updateUserTask = new UpdateUserTask();
           updateUserTask.execute(userUpdateDto, user.getId());
 
-          Toast.makeText(getContext(), "User updated successfully", Toast.LENGTH_SHORT).show();
-
           if (currentUserEmail.equalsIgnoreCase(user.getEmail()) && !userUpdateDto.getEmail().equalsIgnoreCase(user.getEmail())) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("token", "");
@@ -199,10 +201,6 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
           }
 
           dialog.dismiss();
-
-          // Refresh the the products ListView
-          refreshData();
-
         }
 
         // Enable the button
@@ -243,7 +241,6 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
 
         // Perform API call to delete this user
         new DeleteUserTask().execute(user.getId());
-        Toast.makeText(getContext(), "User deleted successfully", Toast.LENGTH_SHORT).show();
         dialog.dismiss();
 
         // Enable the button
@@ -255,6 +252,13 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
   }
 
   private class GetUsersTask extends AsyncTask<Void, Void, List<UserDto>> {
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      mProgressBar.setVisibility(View.VISIBLE);
+      mTextViewAvailable.setVisibility(View.GONE);
+    }
+
     @Override
     protected List<UserDto> doInBackground(Void... voids) {
       UserApi apiInstance = new UserApi();
@@ -273,6 +277,14 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
         clear();
         addAll(users);
         notifyDataSetChanged();
+
+        if (users.isEmpty()) {
+          mTextViewAvailable.setVisibility(View.VISIBLE);
+        }
+      }
+      mProgressBar.setVisibility(View.GONE);
+      if (users == null) {
+        mTextViewAvailable.setVisibility(View.VISIBLE);
       }
     }
   }
@@ -295,16 +307,20 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
       super.onPostExecute(aVoid);
       // Refresh the list of products after updating a user
       refreshData();
+      Toast.makeText(activity, "User updated successfully", Toast.LENGTH_SHORT).show();
     }
   }
 
   private class DeleteUserTask extends AsyncTask<Integer, Void, Void> {
+    boolean errorOccurred = false;
+
     @Override
     protected Void doInBackground(Integer... integers) {
       UserApi apiInstance = new UserApi();
       try {
         apiInstance.deleteUser(integers[0]);
       } catch (ApiException e) {
+        errorOccurred = true;
         System.err.println("Exception when calling UserApi#deleteUser");
         e.printStackTrace();
       }
@@ -315,7 +331,12 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
     protected void onPostExecute(Void aVoid) {
       super.onPostExecute(aVoid);
       // Refresh the list of users after deleting a user
-      refreshData();
+      if (!errorOccurred) {
+        refreshData();
+        Toast.makeText(activity, "User deleted successfully", Toast.LENGTH_SHORT).show();
+      } else {
+        Toast.makeText(activity, "We encountered an error while handling your request.", Toast.LENGTH_SHORT).show();
+      }
     }
   }
 

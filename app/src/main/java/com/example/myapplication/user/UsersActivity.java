@@ -9,7 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.DrawerBaseActivity;
@@ -26,6 +28,8 @@ public class UsersActivity extends DrawerBaseActivity {
   ActivityUsersBinding activityUsersBinding;
   private ListView userList;
   private UserListAdapter userAdapter;
+  private ProgressBar mProgressBar;
+  private TextView textViewAvailable;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +38,11 @@ public class UsersActivity extends DrawerBaseActivity {
     setContentView(activityUsersBinding.getRoot());
 
     userList = findViewById(R.id.ListViewUsers);
+    mProgressBar = findViewById(R.id.fetchingProgressBar);
+    textViewAvailable = findViewById(R.id.textViewAvailable);
 
-    // Create an instance of the ProductListAdapter
-    userAdapter = new UserListAdapter(UsersActivity.this, new ArrayList<>());
+    // Create an instance of the UserListAdapter
+    userAdapter = new UserListAdapter(UsersActivity.this, new ArrayList<>(), mProgressBar, textViewAvailable);
 
     // Set the userAdapter for the ListView
     userList.setAdapter(userAdapter);
@@ -133,11 +139,6 @@ public class UsersActivity extends DrawerBaseActivity {
           // Perform API call to save the newly created user
           new CreateUserTask().execute(userCreateDto);
           dialog.dismiss();
-
-          // Refresh the the users ListView
-          userAdapter.refreshData();
-
-          Toast.makeText(UsersActivity.this, "User added successfully", Toast.LENGTH_SHORT).show();
         }
 
         // Enable the button
@@ -159,6 +160,14 @@ public class UsersActivity extends DrawerBaseActivity {
         e.printStackTrace();
       }
       return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+      super.onPostExecute(aVoid);
+      // Refresh the the users ListView
+      userAdapter.refreshData();
+      Toast.makeText(UsersActivity.this, "User added successfully", Toast.LENGTH_SHORT).show();
     }
   }
 
