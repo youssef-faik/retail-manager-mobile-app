@@ -38,7 +38,7 @@ public class UsersActivity extends DrawerBaseActivity {
     setContentView(activityUsersBinding.getRoot());
 
     userList = findViewById(R.id.ListViewUsers);
-    mProgressBar = findViewById(R.id.fetchingProgressBar);
+    mProgressBar = findViewById(R.id.progressBar);
     textViewAvailable = findViewById(R.id.textViewAvailable);
 
     // Create an instance of the UserListAdapter

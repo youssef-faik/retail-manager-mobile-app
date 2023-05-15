@@ -4,16 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/linear_layout_bg_color"
     android:orientation="vertical"
-    android:paddingTop="64dp"
     android:weightSum="3"
     tools:context=".LoginActivity">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-7dp"
+        android:layout_marginBottom="88dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/purple_bg_color"
+        android:visibility="invisible" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:layout_margin="8dp"
+        android:background="@drawable/shape_listview_background"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/imageView"
@@ -22,72 +37,57 @@
             android:layout_gravity="center_horizontal"
             android:importantForAccessibility="no"
             app:srcCompat="@drawable/img_app_logo" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email" />
-
-        <EditText
-            android:id="@+id/editTextTextEmailAddress"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp"
-            android:text="@string/email_placeholder"
-            tools:ignore="Autofill,LabelFor,VisualLintTextFieldSize" />
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/password" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email" />
 
-        <EditText
-            android:id="@+id/editTextTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:minHeight="48dp"
-            android:text="@string/password_placeholder"
-            tools:ignore="Autofill,LabelFor,VisualLintTextFieldSize" />
+            <EditText
+                android:id="@+id/editTextTextEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:minHeight="48dp"
+                android:text="@string/email_placeholder"
+                tools:ignore="Autofill,LabelFor,VisualLintTextFieldSize" />
 
-        <Button
-            android:id="@+id/buttonLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
-            android:drawableLeft="@drawable/ic_login"
-            android:minHeight="48dp"
-            android:text="@string/login"
-            android:textStyle="bold"
-            tools:ignore="RtlHardcoded" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/password" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:orientation="vertical">
+            <EditText
+                android:id="@+id/editTextTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:minHeight="48dp"
+                android:text="@string/password_placeholder"
+                tools:ignore="Autofill,LabelFor,VisualLintTextFieldSize" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="@style/Widget.Material3.CircularProgressIndicator.ExtraSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:indeterminate="true"
-            android:visibility="invisible" />
+            <Button
+                android:id="@+id/buttonLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/purple_bg_color"
+                android:drawableLeft="@drawable/ic_login"
+                android:minHeight="48dp"
+                android:text="@string/login"
+                android:textStyle="bold"
+                tools:ignore="RtlHardcoded" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -103,7 +103,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp"
             android:text="@string/copyright"
-            android:textColor="#A1A1A1"
-            android:textStyle="italic" />
+            android:textColor="#7987a1" />
     </LinearLayout>
 </LinearLayout>

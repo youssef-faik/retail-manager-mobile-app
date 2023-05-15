@@ -271,7 +271,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
           mTextViewAvailable.setVisibility(View.VISIBLE);
         }
       }
-      mProgressBar.setVisibility(View.GONE);
+      mProgressBar.setVisibility(View.INVISIBLE);
       if (products == null) {
         mTextViewAvailable.setVisibility(View.VISIBLE);
       }

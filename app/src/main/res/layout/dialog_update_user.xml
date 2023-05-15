@@ -74,9 +74,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_marginTop="24dp"
-        android:visibility="gone"
         android:text="@string/modifying_user_email_warning"
         android:textAlignment="center"
+        android:visibility="gone"
         app:drawableLeftCompat="@android:drawable/stat_sys_warning"
         app:drawableTint="#FFCC80" />
 
@@ -97,6 +97,7 @@
             android:id="@+id/button_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_bg_color"
             android:text="@string/save" />
 
     </LinearLayout>

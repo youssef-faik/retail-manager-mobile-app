@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="linear_layout_bg_color">#f9fafb</color>
+    <color name="purple_bg_color">#6571ff</color>
+    <color name="disable_button">#CCCCCC</color>
 </resources>

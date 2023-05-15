@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.SocketTimeoutException;
+
 import io.swagger.client.ApiException;
 import io.swagger.client.Configuration;
 import io.swagger.client.api.AuthenticationApi;
@@ -69,6 +71,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // If the input values are valid, try to sign in user
         if (isValid) {
+          loginBtn.setBackgroundColor(getColor(R.color.disable_button));
+          loginBtn.setTextColor(getColor(R.color.white));
           loginBtn.setEnabled(false);
           // Perform API call for user authentication
           AuthenticationRequest body = new AuthenticationRequest();
@@ -112,6 +116,10 @@ public class LoginActivity extends AppCompatActivity {
           if (e.getResponseBody() != null) {
             JSONObject json = new JSONObject(e.getResponseBody());
             errorMessage = "Error : " + json.getString("message");
+          }
+
+          if (e.getCause() instanceof SocketTimeoutException) {
+            errorMessage = "Failed to connect to the server.";
           }
         } catch (JSONException ex) {
           throw new RuntimeException(ex);
@@ -175,7 +183,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
       }
-      mProgressBar.setVisibility(View.GONE);
+      mProgressBar.setVisibility(View.INVISIBLE);
+      loginBtn.setBackgroundColor(getColor(R.color.purple_bg_color));
       loginBtn.setEnabled(true);
 
     }
@@ -183,6 +192,3 @@ public class LoginActivity extends AppCompatActivity {
   }
 
 }
-
-
-

@@ -3,44 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/linear_layout_bg_color"
     android:orientation="vertical"
     tools:context=".user.UsersActivity">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-7dp"
+        android:layout_marginBottom="-7dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/purple_bg_color"
+        android:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="right"
         android:orientation="horizontal"
         android:padding="8dp">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/add_button_button"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ProgressBar
-                android:id="@+id/fetchingProgressBar"
-                style="@style/Widget.Material3.CircularProgressIndicator.ExtraSmall"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_gravity="center_vertical"
-                android:indeterminate="true"
-                android:visibility="visible" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right">
-
-            <Button
-                android:id="@+id/add_button_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:drawableLeft="@drawable/ic_add_white"
-                android:minHeight="48dp"
-                android:text="Add user"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:layout_gravity="right"
+            android:backgroundTint="@color/purple_bg_color"
+            android:drawableLeft="@drawable/ic_add_white"
+            android:minHeight="48dp"
+            android:text="Add user"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

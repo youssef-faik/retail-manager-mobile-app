@@ -39,7 +39,7 @@ public class CustomersActivity extends DrawerBaseActivity {
     setContentView(activityCustomersBinding.getRoot());
 
     customerList = findViewById(R.id.ListViewCustomers);
-    mProgressBar = findViewById(R.id.fetchingProgressBar);
+    mProgressBar = findViewById(R.id.progressBar);
     textViewAvailable = findViewById(R.id.textViewAvailable);
 
     // Create an instance of the CustomerListAdapter

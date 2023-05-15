@@ -39,7 +39,7 @@ public class ProductsActivity extends DrawerBaseActivity {
     setContentView(activityProductsBinding.getRoot());
 
     productList = findViewById(R.id.ListViewProducts);
-    mProgressBar = findViewById(R.id.fetchingProgressBar);
+    mProgressBar = findViewById(R.id.progressBar);
     textViewAvailable = findViewById(R.id.textViewAvailable);
 
     // Create an instance of the ProductListAdapter

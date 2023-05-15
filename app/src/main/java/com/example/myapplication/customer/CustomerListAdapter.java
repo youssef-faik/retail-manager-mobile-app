@@ -249,7 +249,7 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
           mTextViewAvailable.setVisibility(View.VISIBLE);
         }
       }
-      mProgressBar.setVisibility(View.GONE);
+      mProgressBar.setVisibility(View.INVISIBLE);
       if (customers == null) {
         mTextViewAvailable.setVisibility(View.VISIBLE);
       }

@@ -282,7 +282,7 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
           mTextViewAvailable.setVisibility(View.VISIBLE);
         }
       }
-      mProgressBar.setVisibility(View.GONE);
+      mProgressBar.setVisibility(View.INVISIBLE);
       if (users == null) {
         mTextViewAvailable.setVisibility(View.VISIBLE);
       }

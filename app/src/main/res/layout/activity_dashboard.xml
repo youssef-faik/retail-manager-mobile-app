@@ -4,6 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/linear_layout_bg_color"
     android:contentDescription="@string/dashboard_activity_label"
     android:orientation="vertical"
     tools:context=".DashboardActivity"></LinearLayout>
