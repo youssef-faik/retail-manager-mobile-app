@@ -30,4 +30,5 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="role">Role</string>
+    <string name="revenue">Revenue</string>
 </resources>
