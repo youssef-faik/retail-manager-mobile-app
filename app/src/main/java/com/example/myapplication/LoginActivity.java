@@ -71,8 +71,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // If the input values are valid, try to sign in user
         if (isValid) {
-          loginBtn.setBackgroundColor(getColor(R.color.disable_button));
-          loginBtn.setTextColor(getColor(R.color.white));
           loginBtn.setEnabled(false);
           // Perform API call for user authentication
           AuthenticationRequest body = new AuthenticationRequest();
@@ -184,7 +182,6 @@ public class LoginActivity extends AppCompatActivity {
 
       }
       mProgressBar.setVisibility(View.INVISIBLE);
-      loginBtn.setBackgroundColor(getColor(R.color.purple_bg_color));
       loginBtn.setEnabled(true);
 
     }
