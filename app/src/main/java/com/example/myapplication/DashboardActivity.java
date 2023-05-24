@@ -17,7 +17,6 @@ import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -47,11 +46,17 @@ public class DashboardActivity extends DrawerBaseActivity {
   final String IP_ADDRESS = "192.168.1.101";
   ActivityDashboardBinding activityDashboardBinding;
   LineChart revenueChart;
+  LineChart customersChart;
   BarChart ordersChart;
+  BarChart monthlySalesChart;
   private TextView totalRevenueTextView;
-  private ProgressBar revenueProgressBar;
+  private TextView totalCustomersTextView;
   private TextView totalOrdersTextView;
+  private TextView totalMonthlySalesTextView;
+  private ProgressBar revenueProgressBar;
   private ProgressBar ordersProgressBar;
+  private ProgressBar monthlySalesProgressBar;
+  private ProgressBar customersProgressBar;
 
 
   @Override
@@ -86,8 +91,18 @@ public class DashboardActivity extends DrawerBaseActivity {
       revenueProgressBar = findViewById(R.id.revenueProgressBar);
       totalRevenueTextView = findViewById(R.id.totalRevenueTextView);
 
+      monthlySalesChart = (BarChart) findViewById(R.id.monthlySalesChart);
+      monthlySalesProgressBar = findViewById(R.id.monthlySalesProgressBar);
+      totalMonthlySalesTextView = findViewById(R.id.totalMonthlySalesTextView);
+
+      customersChart = (LineChart) findViewById(R.id.customersChart);
+      customersProgressBar = findViewById(R.id.customersProgressBar);
+      totalCustomersTextView = findViewById(R.id.totalCustomersTextView);
+
       new LoadOrdersChatDataTask().execute();
       new LoadRevenueChatDataTask().execute();
+      new LoadMonthlySalesChatDataTask().execute();
+      new LoadCustomersChatDataTask().execute();
     }
 
   }
@@ -207,7 +222,6 @@ public class DashboardActivity extends DrawerBaseActivity {
 
   }
 
-
   private class LoadRevenueChatDataTask extends AsyncTask<Void, Void, ChartDataDto> {
     String errorMessage = "An error occurred while processing your request";
 
@@ -318,6 +332,233 @@ public class DashboardActivity extends DrawerBaseActivity {
         totalRevenueTextView.setVisibility(View.VISIBLE);
       }
       revenueChart.setVisibility(View.VISIBLE);
+
+    }
+
+  }
+
+  private class LoadMonthlySalesChatDataTask extends AsyncTask<Void, Void, ChartDataDto> {
+    String errorMessage = "An error occurred while processing your request";
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      monthlySalesChart.setVisibility(View.GONE);
+      totalMonthlySalesTextView.setVisibility(View.GONE);
+      monthlySalesProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected ChartDataDto doInBackground(Void... voids) {
+      DashboardApi apiInstance = new DashboardApi();
+      try {
+        return apiInstance.getSales(LocalDate.now(), LocalDate.now());
+      } catch (ApiException e) {
+        // Retrieve the error message
+        try {
+          if (e.getResponseBody() != null) {
+            JSONObject json = new JSONObject(e.getResponseBody());
+            errorMessage = "Error : " + json.getString("message");
+          }
+
+          if (e.getCause() instanceof SocketTimeoutException) {
+            errorMessage = "Failed to connect to the server.";
+          }
+        } catch (JSONException ex) {
+          throw new RuntimeException(ex);
+        }
+
+        // Log the error details
+        System.err.println("Exception when calling AuthenticationApi#authenticate");
+        System.out.println("ResponseBody : " + errorMessage);
+        e.printStackTrace();
+
+        // display toast with the error message
+        runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+          }
+        });
+      } catch (Exception e) {
+        runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+          }
+        });
+      }
+
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(ChartDataDto monthlySalesData) {
+      monthlySalesProgressBar.setVisibility(View.GONE);
+
+      if (monthlySalesData != null) {
+        List<BarEntry> entries = new ArrayList<BarEntry>();
+
+        for (int i = 0; i < monthlySalesData.getData().size(); i++) {
+          entries.add(new BarEntry(i, monthlySalesData.getData().get(i)));
+        }
+
+        // add entries to dataset
+        BarDataSet dataSet = new BarDataSet(entries, "Monthly Sales");
+        dataSet.setColor(getColor(R.color.purple_bg_color));
+        dataSet.setValueTextColor(getColor(R.color.purple_bg_color));
+
+        BarData barData = new BarData(dataSet);
+        monthlySalesChart.setData(barData);
+
+        monthlySalesChart.getDescription().setEnabled(false);
+        monthlySalesChart.getLegend().setEnabled(false);
+
+        final String[] dates = monthlySalesData.getDates().toArray(new String[0]);
+        ValueFormatter formatter = new ValueFormatter() {
+          @Override
+          public String getAxisLabel(float value, AxisBase axis) {
+            return dates[(int) value];
+          }
+        };
+
+        XAxis xAxis = monthlySalesChart.getXAxis();
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(formatter);
+        xAxis.setXOffset(1);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        monthlySalesChart.getAxisLeft().setDrawAxisLine(false);
+        monthlySalesChart.getAxisLeft().setDrawZeroLine(true);
+        monthlySalesChart.getAxisRight().setEnabled(false);
+
+        monthlySalesChart.animateX(2000, Easing.EaseInOutExpo);
+
+        Integer total = 0;
+
+        for (int i : monthlySalesData.getData()) {
+          total += i;
+        }
+
+        totalMonthlySalesTextView.setText("$" + total);
+        totalMonthlySalesTextView.setVisibility(View.VISIBLE);
+      }
+      monthlySalesChart.setVisibility(View.VISIBLE);
+
+    }
+
+  }
+
+  private class LoadCustomersChatDataTask extends AsyncTask<Void, Void, ChartDataDto> {
+    String errorMessage = "An error occurred while processing your request";
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      customersChart.setVisibility(View.GONE);
+      totalCustomersTextView.setVisibility(View.GONE);
+      customersProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected ChartDataDto doInBackground(Void... voids) {
+      DashboardApi apiInstance = new DashboardApi();
+      try {
+        return apiInstance.getCustomers(LocalDate.now(), LocalDate.now());
+      } catch (ApiException e) {
+        // Retrieve the error message
+        try {
+          if (e.getResponseBody() != null) {
+            JSONObject json = new JSONObject(e.getResponseBody());
+            errorMessage = "Error : " + json.getString("message");
+          }
+
+          if (e.getCause() instanceof SocketTimeoutException) {
+            errorMessage = "Failed to connect to the server.";
+          }
+        } catch (JSONException ex) {
+          throw new RuntimeException(ex);
+        }
+
+        // Log the error details
+        System.err.println("Exception when calling AuthenticationApi#authenticate");
+        System.out.println("ResponseBody : " + errorMessage);
+        e.printStackTrace();
+
+        // display toast with the error message
+        runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+          }
+        });
+      } catch (Exception e) {
+        runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+          }
+        });
+      }
+
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(ChartDataDto customersData) {
+      customersProgressBar.setVisibility(View.GONE);
+
+      if (customersData != null) {
+        List<Entry> entries = new ArrayList<Entry>();
+
+        for (int i = 0; i < customersData.getData().size(); i++) {
+          entries.add(new Entry(i, customersData.getData().get(i)));
+        }
+
+        // add entries to dataset
+        LineDataSet dataSet = new LineDataSet(entries, "customers");
+        dataSet.setColor(getColor(R.color.purple_bg_color));
+        dataSet.setValueTextColor(getColor(R.color.purple_bg_color));
+
+        LineData lineData = new LineData(dataSet);
+        customersChart.setData(lineData);
+
+        // the labels that should be drawn on the XAxis
+        final String[] dates = customersData.getDates().toArray(new String[0]);
+        ValueFormatter formatter = new ValueFormatter() {
+          @Override
+          public String getAxisLabel(float value, AxisBase axis) {
+            return dates[(int) value];
+          }
+        };
+
+        customersChart.getDescription().setEnabled(false);
+        customersChart.getLegend().setEnabled(false);
+
+        XAxis xAxis = customersChart.getXAxis();
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(formatter);
+        xAxis.setXOffset(1);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        customersChart.getAxisLeft().setDrawAxisLine(false);
+        customersChart.getAxisLeft().setDrawZeroLine(true);
+        customersChart.getAxisRight().setEnabled(false);
+
+        customersChart.animateX(2000, Easing.EaseInOutExpo);
+
+        Integer total = 0;
+
+        for (int i : customersData.getData()) {
+          total += i;
+        }
+
+        totalCustomersTextView.setText(total.toString());
+        totalCustomersTextView.setVisibility(View.VISIBLE);
+      }
+      customersChart.setVisibility(View.VISIBLE);
 
     }
 

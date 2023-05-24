@@ -31,4 +31,6 @@
     <string name="last_name">Last Name</string>
     <string name="role">Role</string>
     <string name="revenue">Revenue</string>
+    <string name="monthly_sales">Monthly Sales</string>
+    <string name="customers">Customers</string>
 </resources>
