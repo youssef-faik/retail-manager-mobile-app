@@ -96,17 +96,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:padding="8dp"
             android:weightSum="10">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_marginVertical="4dp"
                 android:layout_weight="0.5"
                 android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="10dp"
+                android:paddingHorizontal="8dp"
                 android:weightSum="4">
 
                 <TextView
@@ -134,9 +133,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-12dp"
                 android:layout_weight="9"
-                android:orientation="horizontal"
-                android:paddingHorizontal="4dp">
+
+                android:orientation="horizontal">
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/revenueCart"

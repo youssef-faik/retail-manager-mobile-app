@@ -283,8 +283,8 @@ public class DashboardActivity extends DrawerBaseActivity {
         revenueChart.setData(lineData);
 
         // description
-        Description revenueChartDescription = revenueChart.getDescription();
-        revenueChartDescription.setText("Monthly sales revenue.");
+        revenueChart.getDescription().setEnabled(false);
+        revenueChart.getLegend().setEnabled(false);
 
         // the labels that should be drawn on the XAxis
         final String[] dates = revenueData.getDates().toArray(new String[0]);
@@ -299,10 +299,14 @@ public class DashboardActivity extends DrawerBaseActivity {
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(formatter);
         xAxis.setXOffset(1);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        revenueChart.getAxisLeft().setDrawAxisLine(false);
+        revenueChart.getAxisLeft().setDrawZeroLine(true);
+        revenueChart.getAxisRight().setEnabled(false);
 
         revenueChart.animateX(2000, Easing.EaseInOutExpo);
-        revenueChart.setDrawBorders(true);
-        revenueChart.setBorderColor(getColor(R.color.light_gray));
 
         Integer total = 0;
 
