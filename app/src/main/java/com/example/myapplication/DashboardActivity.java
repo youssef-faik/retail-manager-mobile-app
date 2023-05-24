@@ -10,6 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.example.myapplication.databinding.ActivityDashboardBinding;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
@@ -47,6 +49,7 @@ public class DashboardActivity extends DrawerBaseActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     super.onCreate(savedInstanceState);
     activityDashboardBinding = ActivityDashboardBinding.inflate(getLayoutInflater());
     setContentView(activityDashboardBinding.getRoot());
