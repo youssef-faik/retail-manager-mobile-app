@@ -14,10 +14,13 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.myapplication.databinding.ActivityDashboardBinding;
 import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -44,8 +47,12 @@ public class DashboardActivity extends DrawerBaseActivity {
   final String IP_ADDRESS = "192.168.1.101";
   ActivityDashboardBinding activityDashboardBinding;
   LineChart revenueChart;
+  BarChart ordersChart;
   private TextView totalRevenueTextView;
   private ProgressBar revenueProgressBar;
+  private TextView totalOrdersTextView;
+  private ProgressBar ordersProgressBar;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +78,131 @@ public class DashboardActivity extends DrawerBaseActivity {
       OAuth bearer_authentication = (OAuth) Configuration.getDefaultApiClient().getAuthentication("Bearer_Authentication");
       bearer_authentication.setAccessToken(token);
 
+      ordersChart = (BarChart) findViewById(R.id.ordersChart);
+      ordersProgressBar = findViewById(R.id.ordersProgressBar);
+      totalOrdersTextView = findViewById(R.id.totalOrdersTextView);
+
       revenueChart = (LineChart) findViewById(R.id.revenueCart);
       revenueProgressBar = findViewById(R.id.revenueProgressBar);
       totalRevenueTextView = findViewById(R.id.totalRevenueTextView);
+
+      new LoadOrdersChatDataTask().execute();
       new LoadRevenueChatDataTask().execute();
+    }
+
+  }
+
+
+  private class LoadOrdersChatDataTask extends AsyncTask<Void, Void, ChartDataDto> {
+    String errorMessage = "An error occurred while processing your request";
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      ordersChart.setVisibility(View.GONE);
+      totalOrdersTextView.setVisibility(View.GONE);
+      ordersProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected ChartDataDto doInBackground(Void... voids) {
+      DashboardApi apiInstance = new DashboardApi();
+      try {
+        return apiInstance.getOrders(LocalDate.now(), LocalDate.now());
+      } catch (ApiException e) {
+        // Retrieve the error message
+        try {
+          if (e.getResponseBody() != null) {
+            JSONObject json = new JSONObject(e.getResponseBody());
+            errorMessage = "Error : " + json.getString("message");
+          }
+
+          if (e.getCause() instanceof SocketTimeoutException) {
+            errorMessage = "Failed to connect to the server.";
+          }
+        } catch (JSONException ex) {
+          throw new RuntimeException(ex);
+        }
+
+        // Log the error details
+        System.err.println("Exception when calling AuthenticationApi#authenticate");
+        System.out.println("ResponseBody : " + errorMessage);
+        e.printStackTrace();
+
+        // display toast with the error message
+        runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+          }
+        });
+      } catch (Exception e) {
+        runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+          }
+        });
+      }
+
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(ChartDataDto ordersData) {
+      ordersProgressBar.setVisibility(View.GONE);
+
+      if (ordersData != null) {
+        List<BarEntry> entries = new ArrayList<BarEntry>();
+
+        for (int i = 0; i < ordersData.getData().size(); i++) {
+          entries.add(new BarEntry(i, ordersData.getData().get(i)));
+        }
+
+        // add entries to dataset
+        BarDataSet dataSet = new BarDataSet(entries, "Orders");
+        dataSet.setColor(getColor(R.color.purple_bg_color));
+        dataSet.setValueTextColor(getColor(R.color.purple_bg_color));
+
+        BarData lineData = new BarData(dataSet);
+        ordersChart.setData(lineData);
+
+        // the labels that should be drawn on the XAxis
+        final String[] dates = ordersData.getDates().toArray(new String[0]);
+        ValueFormatter formatter = new ValueFormatter() {
+          @Override
+          public String getAxisLabel(float value, AxisBase axis) {
+            return dates[(int) value];
+          }
+        };
+
+        ordersChart.getDescription().setEnabled(false);
+        ordersChart.getLegend().setEnabled(false);
+
+        XAxis xAxis = ordersChart.getXAxis();
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(formatter);
+        xAxis.setXOffset(1);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        ordersChart.getAxisLeft().setDrawAxisLine(false);
+        ordersChart.getAxisLeft().setDrawZeroLine(true);
+        ordersChart.getAxisRight().setEnabled(false);
+
+        ordersChart.animateX(2000, Easing.EaseInOutExpo);
+
+        Integer total = 0;
+
+        for (int i : ordersData.getData()) {
+          total += i;
+        }
+
+        totalOrdersTextView.setText("$" + total);
+        totalOrdersTextView.setVisibility(View.VISIBLE);
+      }
+      ordersChart.setVisibility(View.VISIBLE);
+
     }
 
   }
