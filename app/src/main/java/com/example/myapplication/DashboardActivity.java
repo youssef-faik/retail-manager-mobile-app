@@ -55,6 +55,7 @@ public class DashboardActivity extends DrawerBaseActivity {
   private ProgressBar monthlySalesProgressBar;
   private ProgressBar customersProgressBar;
 
+  private boolean wasRedirectedToLogin = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +76,11 @@ public class DashboardActivity extends DrawerBaseActivity {
       startActivity(intent);
       finish();
     } else {
-
       // Set JWT token for default ApiClient
       OAuth bearer_authentication = (OAuth) Configuration.getDefaultApiClient().getAuthentication("Bearer_Authentication");
       bearer_authentication.setAccessToken(token);
+
+      new CheckTokenTask().execute();
 
       ordersChart = findViewById(R.id.ordersChart);
       ordersProgressBar = findViewById(R.id.ordersProgressBar);
@@ -96,6 +98,75 @@ public class DashboardActivity extends DrawerBaseActivity {
       new LoadCustomersChatDataTask().execute();
       new LoadMonthlySalesChatDataTask().execute();
     }
+
+  }
+
+
+
+
+
+  private void clearTokenAndRedirectToLogin() {
+    wasRedirectedToLogin = true;
+    SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
+    SharedPreferences.Editor editor = prefs.edit();
+    editor.putString("token", "");
+    editor.putString("role", "");
+    editor.apply();
+
+    runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        Toast.makeText(getApplicationContext(), "Your session was expired.", Toast.LENGTH_SHORT).show();
+
+      }
+    });
+    Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+    startActivity(intent);
+    finish();
+  }
+
+  private class CheckTokenTask extends AsyncTask<Void, Void, Void> {
+    String errorMessage = "An error occurred while processing your request";
+
+    @Override
+    protected Void doInBackground(Void... voids) {
+      TableauDeBordApi apiInstance = new TableauDeBordApi();
+      try {
+        apiInstance.getOrders(LocalDate.now().minusDays(1), LocalDate.now());
+      } catch (ApiException e) {
+        // Retrieve the error message
+        try {
+          if (e.getResponseBody() != null) {
+            JSONObject json = new JSONObject(e.getResponseBody());
+            errorMessage = "Error : " + json.getString("message");
+          }
+
+          if (e.getCause() instanceof SocketTimeoutException) {
+            errorMessage = "Failed to connect to the server.";
+          }
+        } catch (JSONException ex) {
+          if (!wasRedirectedToLogin) {
+            clearTokenAndRedirectToLogin();
+          }
+        }
+
+        // Log the error details
+        System.err.println("Exception when calling AuthenticationApi#authenticate");
+        System.out.println("ResponseBody : " + errorMessage);
+        e.printStackTrace();
+
+      } catch (Exception e) {
+        runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+          }
+        });
+      }
+
+      return null;
+    }
+
 
   }
 
@@ -128,7 +199,9 @@ public class DashboardActivity extends DrawerBaseActivity {
             errorMessage = "Failed to connect to the server.";
           }
         } catch (JSONException ex) {
-          throw new RuntimeException(ex);
+          if (!wasRedirectedToLogin) {
+            clearTokenAndRedirectToLogin();
+          }
         }
 
         // Log the error details
@@ -136,13 +209,6 @@ public class DashboardActivity extends DrawerBaseActivity {
         System.out.println("ResponseBody : " + errorMessage);
         e.printStackTrace();
 
-        // display toast with the error message
-        runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
-          }
-        });
       } catch (Exception e) {
         runOnUiThread(new Runnable() {
           @Override
@@ -242,7 +308,9 @@ public class DashboardActivity extends DrawerBaseActivity {
             errorMessage = "Failed to connect to the server.";
           }
         } catch (JSONException ex) {
-          throw new RuntimeException(ex);
+          if (!wasRedirectedToLogin) {
+            clearTokenAndRedirectToLogin();
+          }
         }
 
         // Log the error details
@@ -250,13 +318,6 @@ public class DashboardActivity extends DrawerBaseActivity {
         System.out.println("ResponseBody : " + errorMessage);
         e.printStackTrace();
 
-        // display toast with the error message
-        runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
-          }
-        });
       } catch (Exception e) {
         runOnUiThread(new Runnable() {
           @Override
@@ -355,7 +416,9 @@ public class DashboardActivity extends DrawerBaseActivity {
             errorMessage = "Failed to connect to the server.";
           }
         } catch (JSONException ex) {
-          throw new RuntimeException(ex);
+          if (!wasRedirectedToLogin) {
+            clearTokenAndRedirectToLogin();
+          }
         }
 
         // Log the error details
@@ -363,13 +426,6 @@ public class DashboardActivity extends DrawerBaseActivity {
         System.out.println("ResponseBody : " + errorMessage);
         e.printStackTrace();
 
-        // display toast with the error message
-        runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
-          }
-        });
       } catch (Exception e) {
         runOnUiThread(new Runnable() {
           @Override
