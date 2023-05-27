@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import io.swagger.client.ApiException;
-import io.swagger.client.api.ProductApi;
+import io.swagger.client.api.ProduitApi;
 import io.swagger.client.model.ProductRequestDto;
 
 public class ProductsActivity extends DrawerBaseActivity {
@@ -156,7 +156,7 @@ public class ProductsActivity extends DrawerBaseActivity {
   private class CreateProductTask extends AsyncTask<ProductRequestDto, Void, Void> {
     @Override
     protected Void doInBackground(ProductRequestDto... productRequestDtos) {
-      ProductApi apiInstance = new ProductApi();
+      ProduitApi apiInstance = new ProduitApi();
       try {
         apiInstance.createProduct(productRequestDtos[0]);
       } catch (ApiException e) {

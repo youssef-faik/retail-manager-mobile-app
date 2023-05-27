@@ -22,8 +22,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import io.swagger.client.ApiException;
-import io.swagger.client.api.CustomerApi;
-import io.swagger.client.model.CustomerRequestDto;
+import io.swagger.client.api.ClientApi;
+import io.swagger.client.model.CustomerCreateDto;
 
 public class CustomersActivity extends DrawerBaseActivity {
   ActivityCustomersBinding activityCustomersBinding;
@@ -66,6 +66,7 @@ public class CustomersActivity extends DrawerBaseActivity {
 
     // retrieve user input
     final EditText nameEditText = dialog.findViewById(R.id.name_edit_text);
+    final EditText iceEditText = dialog.findViewById(R.id.ice_edit_text);
     final EditText emailEditText = dialog.findViewById(R.id.email_edit_text);
     final EditText phoneEditText = dialog.findViewById(R.id.phone_edit_text);
     final EditText addressEditText = dialog.findViewById(R.id.address_edit_text);
@@ -88,6 +89,7 @@ public class CustomersActivity extends DrawerBaseActivity {
 
         // Get the input values
         String nameString = nameEditText.getText().toString().trim();
+        String iceString = iceEditText.getText().toString().trim();
         String addressString = addressEditText.getText().toString().trim();
         String emailString = emailEditText.getText().toString().trim();
         String phoneString = phoneEditText.getText().toString().trim();
@@ -99,8 +101,8 @@ public class CustomersActivity extends DrawerBaseActivity {
           isValid = false;
         }
 
-        if (TextUtils.isEmpty(emailString)) {
-          emailEditText.setError("Customer email is required");
+        if (TextUtils.isEmpty(iceString)) {
+          iceEditText.setError("ICE is required");
           isValid = false;
         }
 
@@ -120,14 +122,15 @@ public class CustomersActivity extends DrawerBaseActivity {
         // If the input values are valid, save the Customer and dismiss the dialog
         if (isValid) {
           // Create the request body
-          CustomerRequestDto customerRequestDto = new CustomerRequestDto();
-          customerRequestDto.name(nameString);
-          customerRequestDto.email(emailString);
-          customerRequestDto.phone(phoneString);
-          customerRequestDto.address(addressString);
+          CustomerCreateDto customerCreateDto = new CustomerCreateDto();
+          customerCreateDto.ice(iceString);
+          customerCreateDto.name(nameString);
+          customerCreateDto.email(emailString);
+          customerCreateDto.phone(phoneString);
+          customerCreateDto.address(addressString);
 
           // Perform API call to save the newly created customer
-          new CreateCustomerTask().execute(customerRequestDto);
+          new CreateCustomerTask().execute(customerCreateDto);
 
           dialog.dismiss();
         }
@@ -140,12 +143,12 @@ public class CustomersActivity extends DrawerBaseActivity {
     dialog.show();
   }
 
-  private class CreateCustomerTask extends AsyncTask<CustomerRequestDto, Void, Void> {
+  private class CreateCustomerTask extends AsyncTask<CustomerCreateDto, Void, Void> {
     String errorMessage = "An error occurred while processing your request";
 
     @Override
-    protected Void doInBackground(CustomerRequestDto... customerRequestDtos) {
-      CustomerApi apiInstance = new CustomerApi();
+    protected Void doInBackground(CustomerCreateDto... customerRequestDtos) {
+      ClientApi apiInstance = new ClientApi();
       try {
         apiInstance.createCustomer(customerRequestDtos[0]);
       } catch (ApiException e) {
@@ -172,7 +175,6 @@ public class CustomersActivity extends DrawerBaseActivity {
             Toast.makeText(CustomersActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
           }
         });
-
 
       }
       return null;

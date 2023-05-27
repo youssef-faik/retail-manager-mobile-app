@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import io.swagger.client.ApiException;
-import io.swagger.client.api.ProductApi;
+import io.swagger.client.api.ProduitApi;
 import io.swagger.client.model.ProductRequestDto;
 import io.swagger.client.model.ProductResponseDto;
 
@@ -250,7 +250,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
 
     @Override
     protected List<ProductResponseDto> doInBackground(Void... voids) {
-      ProductApi apiInstance = new ProductApi();
+      ProduitApi apiInstance = new ProduitApi();
       try {
         return apiInstance.getAllProducts();
       } catch (ApiException e) {
@@ -281,7 +281,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
   public class UpdateProductTask extends AsyncTask<Object, Void, Void> {
     @Override
     protected Void doInBackground(Object... objects) {
-      ProductApi apiInstance = new ProductApi();
+      ProduitApi apiInstance = new ProduitApi();
       try {
         apiInstance.updateProduct((ProductRequestDto) objects[0], (Integer) objects[1]);
       } catch (ApiException e) {
@@ -303,7 +303,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
   private class DeleteProductTask extends AsyncTask<Integer, Void, Void> {
     @Override
     protected Void doInBackground(Integer... integers) {
-      ProductApi apiInstance = new ProductApi();
+      ProduitApi apiInstance = new ProduitApi();
       try {
         apiInstance.deleteProduct(integers[0]);
       } catch (ApiException e) {

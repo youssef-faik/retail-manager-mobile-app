@@ -23,9 +23,9 @@ import com.example.myapplication.R;
 import java.util.List;
 
 import io.swagger.client.ApiException;
-import io.swagger.client.api.CustomerApi;
-import io.swagger.client.model.CustomerRequestDto;
+import io.swagger.client.api.ClientApi;
 import io.swagger.client.model.CustomerResponseDto;
+import io.swagger.client.model.CustomerUpdateDto;
 
 public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
   private final List<CustomerResponseDto> customers;
@@ -61,8 +61,8 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
     TextView phone = view.findViewById(R.id.phoneTextView);
     phone.setText(customer.getPhone());
 
-    TextView emailTextView = view.findViewById(R.id.emailTextView);
-    emailTextView.setText(customer.getEmail());
+    TextView emailTextView = view.findViewById(R.id.iceTextView);
+    emailTextView.setText(customer.getIce());
 
     // Set the options button click listener to show the menu
     Button optionsButton = view.findViewById(R.id.optionsButton);
@@ -106,6 +106,11 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
     phoneEditText.setText(customer.getPhone());
     addressEditText.setText(customer.getAddress());
 
+    final EditText iceEditText = dialog.findViewById(R.id.ice_edit_text);
+    final TextView iceTextView = dialog.findViewById(R.id.ice_text_view);
+    iceEditText.setVisibility(View.GONE);
+    iceTextView.setVisibility(View.GONE);
+
     Button cancelButton = dialog.findViewById(R.id.button_cancel);
     cancelButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -134,11 +139,6 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
           isValid = false;
         }
 
-        if (TextUtils.isEmpty(email)) {
-          emailEditText.setError("Customer email is required");
-          isValid = false;
-        }
-
         if (TextUtils.isEmpty(phone)) {
           phoneEditText.setError("Customer phone is required");
           isValid = false;
@@ -155,15 +155,15 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
         // If the input values are valid, save the customer and dismiss the dialog
         if (isValid) {
           // Create the request body
-          CustomerRequestDto customerRequestDto = new CustomerRequestDto();
-          customerRequestDto.name(name);
-          customerRequestDto.email(email);
-          customerRequestDto.phone(phone);
-          customerRequestDto.address(address);
+          CustomerUpdateDto customerUpdateDto = new CustomerUpdateDto();
+          customerUpdateDto.name(name);
+          customerUpdateDto.email(email);
+          customerUpdateDto.phone(phone);
+          customerUpdateDto.address(address);
 
           // Perform API call to update this customer
           UpdateCustomerTask updateCustomerTask = new UpdateCustomerTask();
-          updateCustomerTask.execute(customerRequestDto, customer.getId());
+          updateCustomerTask.execute(customerUpdateDto, customer.getIce());
 
           dialog.dismiss();
         }
@@ -201,7 +201,7 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
         deleteButton.setEnabled(false);
 
         // Perform API call to delete this customer
-        new DeleteCustomerTask().execute(customer.getId());
+        new DeleteCustomerTask().execute(customer.getIce());
         Toast.makeText(getContext(), "Customer deleted successfully", Toast.LENGTH_SHORT).show();
         dialog.dismiss();
 
@@ -228,7 +228,7 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
 
     @Override
     protected List<CustomerResponseDto> doInBackground(Void... voids) {
-      CustomerApi apiInstance = new CustomerApi();
+      ClientApi apiInstance = new ClientApi();
       try {
         return apiInstance.getAllCustomers();
       } catch (ApiException e) {
@@ -259,9 +259,9 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
   private class UpdateCustomerTask extends AsyncTask<Object, Void, Void> {
     @Override
     protected Void doInBackground(Object... objects) {
-      CustomerApi apiInstance = new CustomerApi();
+      ClientApi apiInstance = new ClientApi();
       try {
-        apiInstance.updateCustomer((CustomerRequestDto) objects[0], (Long) objects[1]);
+        apiInstance.updateCustomer((CustomerUpdateDto) objects[0], (String) objects[1]);
       } catch (ApiException e) {
         System.err.println("Exception when calling CustomerApi#updateCustomer");
         e.printStackTrace();
@@ -278,12 +278,12 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
     }
   }
 
-  private class DeleteCustomerTask extends AsyncTask<Long, Void, Void> {
+  private class DeleteCustomerTask extends AsyncTask<String, Void, Void> {
     @Override
-    protected Void doInBackground(Long... longs) {
-      CustomerApi apiInstance = new CustomerApi();
+    protected Void doInBackground(String... strings) {
+      ClientApi apiInstance = new ClientApi();
       try {
-        apiInstance.deleteCustomer(longs[0]);
+        apiInstance.deleteCustomer(strings[0]);
       } catch (ApiException e) {
         System.err.println("Exception when calling CustomerApi#createCustomer");
         e.printStackTrace();

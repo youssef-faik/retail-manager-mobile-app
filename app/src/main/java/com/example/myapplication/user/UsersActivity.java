@@ -21,7 +21,7 @@ import com.example.myapplication.databinding.ActivityUsersBinding;
 import java.util.ArrayList;
 
 import io.swagger.client.ApiException;
-import io.swagger.client.api.UserApi;
+import io.swagger.client.api.UtilisateurApi;
 import io.swagger.client.model.UserCreateDto;
 
 public class UsersActivity extends DrawerBaseActivity {
@@ -152,7 +152,7 @@ public class UsersActivity extends DrawerBaseActivity {
   private class CreateUserTask extends AsyncTask<UserCreateDto, Void, Void> {
     @Override
     protected Void doInBackground(UserCreateDto... userCreateDtos) {
-      UserApi apiInstance = new UserApi();
+      UtilisateurApi apiInstance = new UtilisateurApi();
       try {
         apiInstance.createUser(userCreateDtos[0]);
       } catch (ApiException e) {

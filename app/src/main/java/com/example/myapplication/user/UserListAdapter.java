@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import io.swagger.client.ApiException;
-import io.swagger.client.api.UserApi;
+import io.swagger.client.api.UtilisateurApi;
 import io.swagger.client.model.UserDto;
 import io.swagger.client.model.UserUpdateDto;
 
@@ -261,7 +261,7 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
 
     @Override
     protected List<UserDto> doInBackground(Void... voids) {
-      UserApi apiInstance = new UserApi();
+      UtilisateurApi apiInstance = new UtilisateurApi();
       try {
         return apiInstance.getAllUsers();
       } catch (ApiException e) {
@@ -292,7 +292,7 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
   public class UpdateUserTask extends AsyncTask<Object, Void, Void> {
     @Override
     protected Void doInBackground(Object... objects) {
-      UserApi apiInstance = new UserApi();
+      UtilisateurApi apiInstance = new UtilisateurApi();
       try {
         apiInstance.updateUser((UserUpdateDto) objects[0], (Integer) objects[1]);
       } catch (ApiException e) {
@@ -316,7 +316,7 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
 
     @Override
     protected Void doInBackground(Integer... integers) {
-      UserApi apiInstance = new UserApi();
+      UtilisateurApi apiInstance = new UtilisateurApi();
       try {
         apiInstance.deleteUser(integers[0]);
       } catch (ApiException e) {

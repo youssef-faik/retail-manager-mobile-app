@@ -22,7 +22,7 @@ import java.net.SocketTimeoutException;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.Configuration;
-import io.swagger.client.api.AuthenticationApi;
+import io.swagger.client.api.AuthentificationApi;
 import io.swagger.client.auth.OAuth;
 import io.swagger.client.model.AuthenticationRequest;
 import io.swagger.client.model.AuthenticationResponse;
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected AuthenticationResponse doInBackground(AuthenticationRequest... authenticationRequests) {
-      AuthenticationApi apiInstance = new AuthenticationApi();
+      AuthentificationApi apiInstance = new AuthentificationApi();
       try {
         return apiInstance.authenticate(authenticationRequests[0]);
       } catch (ApiException e) {
