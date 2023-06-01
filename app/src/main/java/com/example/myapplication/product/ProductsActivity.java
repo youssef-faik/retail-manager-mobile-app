@@ -65,7 +65,7 @@ public class ProductsActivity extends DrawerBaseActivity {
     final Dialog dialog = new Dialog(this);
     dialog.getWindow().setBackgroundDrawableResource(R.drawable.shape_listview_background);
     dialog.setContentView(R.layout.dialog_new_product);
-    dialog.setTitle("Add New Product");
+    dialog.setTitle("Ajouter un nouveau produit");
 
     // retrieve user input
     final EditText nameEditText = dialog.findViewById(R.id.name_edit_text);
@@ -106,22 +106,22 @@ public class ProductsActivity extends DrawerBaseActivity {
         // Validate the input values
         boolean isValid = true;
         if (TextUtils.isEmpty(name)) {
-          nameEditText.setError("Product name is required");
+          nameEditText.setError("Le nom du produit est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(purchasePriceString)) {
-          purchasePriceEditText.setError("Product purchase price is required");
+          purchasePriceEditText.setError("Le prix d'achat du produit est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(sellingPriceString)) {
-          sellingPriceEditText.setError("Product selling price is required");
+          sellingPriceEditText.setError("Le prix de vente du produit est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(barcode)) {
-          barcodeEditText.setError("Product barcode is required");
+          barcodeEditText.setError("Le code-barres du produit est requis");
           isValid = false;
         }
 
@@ -160,7 +160,7 @@ public class ProductsActivity extends DrawerBaseActivity {
       try {
         apiInstance.createProduct(productRequestDtos[0]);
       } catch (ApiException e) {
-        System.err.println("Exception when calling ProductApi#createProduct");
+        System.err.println("Exception lors de l'appel à ProductApi#createProduct");
         e.printStackTrace();
       }
       return null;
@@ -171,7 +171,7 @@ public class ProductsActivity extends DrawerBaseActivity {
       super.onPostExecute(aVoid);
       // Refresh the the products ListView
       productAdapter.refreshData();
-      Toast.makeText(ProductsActivity.this, "Product added successfully", Toast.LENGTH_SHORT).show();
+      Toast.makeText(ProductsActivity.this, "Produit ajouté avec succès", Toast.LENGTH_SHORT).show();
     }
   }
 

@@ -104,22 +104,22 @@ public class UsersActivity extends DrawerBaseActivity {
         // Validate the input values
         boolean isValid = true;
         if (TextUtils.isEmpty(firstName)) {
-          firstNameEditText.setError("User First Name is required");
+          firstNameEditText.setError("Le prénom de l'utilisateur est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(lastName)) {
-          lastNameEditText.setError("User Last Name is required");
+          lastNameEditText.setError("Le nom de famille de l'utilisateur est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(email)) {
-          emailEditText.setError("User Email is required");
+          emailEditText.setError("L'adresse e-mail de l'utilisateur est requise");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(password)) {
-          passwordEditText.setError("User Password is required");
+          passwordEditText.setError("Le mot de passe de l'utilisateur est requis");
           isValid = false;
         }
 
@@ -156,7 +156,7 @@ public class UsersActivity extends DrawerBaseActivity {
       try {
         apiInstance.createUser(userCreateDtos[0]);
       } catch (ApiException e) {
-        System.err.println("Exception when calling UserApi#createUser");
+        System.err.println("Exception lors de l'appel à UserApi#createUser");
         e.printStackTrace();
       }
       return null;
@@ -167,7 +167,7 @@ public class UsersActivity extends DrawerBaseActivity {
       super.onPostExecute(aVoid);
       // Refresh the the users ListView
       userAdapter.refreshData();
-      Toast.makeText(UsersActivity.this, "User added successfully", Toast.LENGTH_SHORT).show();
+      Toast.makeText(UsersActivity.this, "Utilisateur ajouté avec succès", Toast.LENGTH_SHORT).show();
     }
   }
 

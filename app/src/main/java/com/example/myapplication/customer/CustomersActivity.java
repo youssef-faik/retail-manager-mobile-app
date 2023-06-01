@@ -97,25 +97,25 @@ public class CustomersActivity extends DrawerBaseActivity {
         // Validate the input values
         boolean isValid = true;
         if (TextUtils.isEmpty(nameString)) {
-          nameEditText.setError("Customer name is required");
+          nameEditText.setError("Le nom du client est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(iceString)) {
-          iceEditText.setError("ICE is required");
+          iceEditText.setError("Le ICE est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(phoneString)) {
-          phoneEditText.setError("Customer phone is required");
+          phoneEditText.setError("Le téléphone du client est requis");
           isValid = false;
         } else if (phoneString.length() != 10) {
-          phoneEditText.setError("Customer phone must be exactly 10 digits long");
+          phoneEditText.setError("Le téléphone du client doit comporter exactement 10 chiffres");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(addressString)) {
-          addressEditText.setError("Customer address is required");
+          addressEditText.setError("L'adresse du client est requise");
           isValid = false;
         }
 
@@ -123,11 +123,11 @@ public class CustomersActivity extends DrawerBaseActivity {
         if (isValid) {
           // Create the request body
           CustomerCreateDto customerCreateDto = new CustomerCreateDto();
-          customerCreateDto.ice(iceString);
-          customerCreateDto.name(nameString);
-          customerCreateDto.email(emailString);
-          customerCreateDto.phone(phoneString);
-          customerCreateDto.address(addressString);
+          customerCreateDto.setIce(iceString);
+          customerCreateDto.setName(nameString);
+          customerCreateDto.setEmail(emailString);
+          customerCreateDto.setPhone(phoneString);
+          customerCreateDto.setAddress(addressString);
 
           // Perform API call to save the newly created customer
           new CreateCustomerTask().execute(customerCreateDto);
@@ -144,7 +144,7 @@ public class CustomersActivity extends DrawerBaseActivity {
   }
 
   private class CreateCustomerTask extends AsyncTask<CustomerCreateDto, Void, Void> {
-    String errorMessage = "An error occurred while processing your request";
+    String errorMessage = "Une erreur s'est produite lors du traitement de votre demande";
 
     @Override
     protected Void doInBackground(CustomerCreateDto... customerRequestDtos) {
@@ -157,14 +157,14 @@ public class CustomersActivity extends DrawerBaseActivity {
         try {
           if (e.getResponseBody() != null) {
             JSONObject json = new JSONObject(e.getResponseBody());
-            errorMessage = "Error : " + json.getString("message");
+            errorMessage = "Erreur : " + json.getString("message");
           }
         } catch (JSONException ex) {
           throw new RuntimeException(ex);
         }
 
         // Log the error details
-        System.err.println("Exception when calling CustomerApi#createCustomer");
+        System.err.println("Exception lors de l'appel à CustomerApi#createCustomer");
         System.out.println("ResponseBody : " + errorMessage);
         e.printStackTrace();
 
@@ -185,7 +185,7 @@ public class CustomersActivity extends DrawerBaseActivity {
       super.onPostExecute(aVoid);
       // Refresh the the customers ListView
       customerAdapter.refreshData();
-      Toast.makeText(CustomersActivity.this, "Customer added successfully", Toast.LENGTH_SHORT).show();
+      Toast.makeText(CustomersActivity.this, "Client ajouté avec succès", Toast.LENGTH_SHORT).show();
     }
   }
 

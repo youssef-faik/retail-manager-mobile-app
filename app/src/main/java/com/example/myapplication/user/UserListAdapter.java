@@ -159,17 +159,17 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
         // Validate the input values
         boolean isValid = true;
         if (TextUtils.isEmpty(firstNameString)) {
-          firstNameEditText.setError("User First Name is required");
+          firstNameEditText.setError("Le prénom de l'utilisateur est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(lastNameString)) {
-          lastNameEditText.setError("User Last Name is required");
+          lastNameEditText.setError("Le nom de famille de l'utilisateur est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(emailString)) {
-          emailEditText.setError("User Email is required");
+          emailEditText.setError("L'e-mail de l'utilisateur est requis");
           isValid = false;
         }
 
@@ -221,8 +221,8 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
     dialog.setContentView(R.layout.dialog_delete);
     TextView deleteDialogTitle = dialog.findViewById(R.id.dialog_title);
     TextView deleteDialogMessage = dialog.findViewById(R.id.dialog_message);
-    deleteDialogTitle.setText("Delete User Confirmation");
-    deleteDialogMessage.setText("Do you really want to delete this user?");
+    deleteDialogTitle.setText("Confirmation de suppression de l'utilisateur");
+    deleteDialogMessage.setText("Voulez-vous vraiment supprimer cet utilisateur ?");
 
     Button cancelButton = dialog.findViewById(R.id.button_cancel);
     cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -265,7 +265,7 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
       try {
         return apiInstance.getAllUsers();
       } catch (ApiException e) {
-        System.err.println("Exception when calling UserApi#listUsers");
+        System.err.println("Exception lors de l'appel à UserApi#listUsers");
         e.printStackTrace();
         return null;
       }
@@ -296,7 +296,7 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
       try {
         apiInstance.updateUser((UserUpdateDto) objects[0], (Integer) objects[1]);
       } catch (ApiException e) {
-        System.err.println("Exception when calling UserApi#updateUser");
+        System.err.println("Exception lors de l'appel à UserApi#updateUser");
         e.printStackTrace();
       }
       return null;
@@ -307,7 +307,7 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
       super.onPostExecute(aVoid);
       // Refresh the list of products after updating a user
       refreshData();
-      Toast.makeText(activity, "User updated successfully", Toast.LENGTH_SHORT).show();
+      Toast.makeText(activity, "Utilisateur mis à jour avec succès", Toast.LENGTH_SHORT).show();
     }
   }
 
@@ -321,7 +321,7 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
         apiInstance.deleteUser(integers[0]);
       } catch (ApiException e) {
         errorOccurred = true;
-        System.err.println("Exception when calling UserApi#deleteUser");
+        System.err.println("Exception lors de l'appel à UserApi#deleteUser");
         e.printStackTrace();
       }
       return null;
@@ -333,9 +333,9 @@ public class UserListAdapter extends ArrayAdapter<UserDto> {
       // Refresh the list of users after deleting a user
       if (!errorOccurred) {
         refreshData();
-        Toast.makeText(activity, "User deleted successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, "Utilisateur supprimé avec succès", Toast.LENGTH_SHORT).show();
       } else {
-        Toast.makeText(activity, "We encountered an error while handling your request.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, "Nous avons rencontré une erreur lors du traitement de votre demande.", Toast.LENGTH_SHORT).show();
       }
     }
   }

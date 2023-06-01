@@ -60,12 +60,12 @@ public class LoginActivity extends AppCompatActivity {
         // Validate the input values
         boolean isValid = true;
         if (TextUtils.isEmpty(emailTxt)) {
-          email.setError("Email is required");
+          email.setError("L'adresse e-mail est requise");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(passwordTxt)) {
-          password.setError("Password is required");
+          password.setError("Le mot de passe est requis");
           isValid = false;
         }
 
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
   private class AuthenticateTask extends AsyncTask<AuthenticationRequest, Void, AuthenticationResponse> {
     public final ProgressBar mProgressBar;
     private final Context mContext;
-    String errorMessage = "An error occurred while processing your request";
+    String errorMessage = "Une erreur s'est produite lors du traitement de votre demande";
 
     public AuthenticateTask(Context context, ProgressBar progressBar) {
       mContext = context;
@@ -113,18 +113,18 @@ public class LoginActivity extends AppCompatActivity {
         try {
           if (e.getResponseBody() != null) {
             JSONObject json = new JSONObject(e.getResponseBody());
-            errorMessage = "Error : " + json.getString("message");
+            errorMessage = "Erreur : " + json.getString("message");
           }
 
           if (e.getCause() instanceof SocketTimeoutException) {
-            errorMessage = "Failed to connect to the server.";
+            errorMessage = "Échec de la connexion au serveur.";
           }
         } catch (JSONException ex) {
           throw new RuntimeException(ex);
         }
 
         // Log the error details
-        System.err.println("Exception when calling AuthenticationApi#authenticate");
+        System.err.println("Exception lors de l'appel à AuthenticationApi#authenticate");
         System.out.println("ResponseBody : " + errorMessage);
         e.printStackTrace();
 
@@ -175,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
           runOnUiThread(new Runnable() {
             @Override
             public void run() {
-              Toast.makeText(mContext, "You don't have permission to use the application", Toast.LENGTH_SHORT).show();
+              Toast.makeText(mContext, "Vous n'avez pas la permission d'utiliser l'application", Toast.LENGTH_SHORT).show();
             }
           });
         }

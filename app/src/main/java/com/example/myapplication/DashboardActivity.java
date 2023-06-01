@@ -102,9 +102,6 @@ public class DashboardActivity extends DrawerBaseActivity {
   }
 
 
-
-
-
   private void clearTokenAndRedirectToLogin() {
     wasRedirectedToLogin = true;
     SharedPreferences prefs = getSharedPreferences("myPrefs", MODE_PRIVATE);
@@ -116,7 +113,7 @@ public class DashboardActivity extends DrawerBaseActivity {
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-        Toast.makeText(getApplicationContext(), "Your session was expired.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Votre session a expiré.", Toast.LENGTH_SHORT).show();
 
       }
     });
@@ -126,7 +123,7 @@ public class DashboardActivity extends DrawerBaseActivity {
   }
 
   private class CheckTokenTask extends AsyncTask<Void, Void, Void> {
-    String errorMessage = "An error occurred while processing your request";
+    String errorMessage = "Une erreur s'est produite lors du traitement de votre demande";
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -142,7 +139,7 @@ public class DashboardActivity extends DrawerBaseActivity {
           }
 
           if (e.getCause() instanceof SocketTimeoutException) {
-            errorMessage = "Failed to connect to the server.";
+            errorMessage = "Échec de la connexion au serveur.";
           }
         } catch (JSONException ex) {
           if (!wasRedirectedToLogin) {
@@ -172,7 +169,7 @@ public class DashboardActivity extends DrawerBaseActivity {
 
 
   private class LoadOrdersChatDataTask extends AsyncTask<Void, Void, ChartDataDto> {
-    String errorMessage = "An error occurred while processing your request";
+    String errorMessage = "Une erreur s'est produite lors du traitement de votre demande";
 
     @Override
     protected void onPreExecute() {
@@ -196,7 +193,7 @@ public class DashboardActivity extends DrawerBaseActivity {
           }
 
           if (e.getCause() instanceof SocketTimeoutException) {
-            errorMessage = "Failed to connect to the server.";
+            errorMessage = "Échec de la connexion au serveur.";
           }
         } catch (JSONException ex) {
           if (!wasRedirectedToLogin) {
@@ -233,7 +230,7 @@ public class DashboardActivity extends DrawerBaseActivity {
         }
 
         // add entries to dataset
-        BarDataSet dataSet = new BarDataSet(entries, "Orders");
+        BarDataSet dataSet = new BarDataSet(entries, "Commandes");
         dataSet.setColor(getColor(R.color.purple_bg_color));
         dataSet.setValueTextColor(getColor(R.color.purple_bg_color));
 
@@ -271,7 +268,7 @@ public class DashboardActivity extends DrawerBaseActivity {
           total += i;
         }
 
-        totalOrdersTextView.setText(total.intValue() + " Order(s)");
+        totalOrdersTextView.setText(total.intValue() + "Commande(s)");
         totalOrdersTextView.setVisibility(View.VISIBLE);
       }
       ordersChart.setVisibility(View.VISIBLE);
@@ -281,7 +278,7 @@ public class DashboardActivity extends DrawerBaseActivity {
   }
 
   private class LoadMonthlySalesChatDataTask extends AsyncTask<Void, Void, ChartDataDto> {
-    String errorMessage = "An error occurred while processing your request";
+    String errorMessage = "Une erreur s'est produite lors du traitement de votre demande";
 
     @Override
     protected void onPreExecute() {
@@ -305,7 +302,7 @@ public class DashboardActivity extends DrawerBaseActivity {
           }
 
           if (e.getCause() instanceof SocketTimeoutException) {
-            errorMessage = "Failed to connect to the server.";
+            errorMessage = "Échec de la connexion au serveur.";
           }
         } catch (JSONException ex) {
           if (!wasRedirectedToLogin) {
@@ -342,7 +339,7 @@ public class DashboardActivity extends DrawerBaseActivity {
         }
 
         // add entries to dataset
-        BarDataSet dataSet = new BarDataSet(entries, "Monthly Sales");
+        BarDataSet dataSet = new BarDataSet(entries, "Ventes mensuelles");
         dataSet.setColor(getColor(R.color.purple_bg_color));
         dataSet.setValueTextColor(getColor(R.color.purple_bg_color));
 
@@ -379,7 +376,7 @@ public class DashboardActivity extends DrawerBaseActivity {
           total += i;
         }
 
-        totalMonthlySalesTextView.setText("$" + total);
+        totalMonthlySalesTextView.setText(String.format("%.2f", total.floatValue()));
         totalMonthlySalesTextView.setVisibility(View.VISIBLE);
       }
       monthlySalesChart.setVisibility(View.VISIBLE);
@@ -389,7 +386,7 @@ public class DashboardActivity extends DrawerBaseActivity {
   }
 
   private class LoadCustomersChatDataTask extends AsyncTask<Void, Void, ChartDataDto> {
-    String errorMessage = "An error occurred while processing your request";
+    String errorMessage = "Une erreur s'est produite lors du traitement de votre demande";
 
     @Override
     protected void onPreExecute() {
@@ -413,7 +410,7 @@ public class DashboardActivity extends DrawerBaseActivity {
           }
 
           if (e.getCause() instanceof SocketTimeoutException) {
-            errorMessage = "Failed to connect to the server.";
+            errorMessage = "Échec de la connexion au serveur.";
           }
         } catch (JSONException ex) {
           if (!wasRedirectedToLogin) {
@@ -450,7 +447,7 @@ public class DashboardActivity extends DrawerBaseActivity {
         }
 
         // add entries to dataset
-        LineDataSet dataSet = new LineDataSet(entries, "customers");
+        LineDataSet dataSet = new LineDataSet(entries, "clients");
         dataSet.setColor(getColor(R.color.purple_bg_color));
         dataSet.setValueTextColor(getColor(R.color.purple_bg_color));
 
@@ -488,7 +485,7 @@ public class DashboardActivity extends DrawerBaseActivity {
           total += i;
         }
 
-        totalCustomersTextView.setText(total.intValue() + " Customer(s)");
+        totalCustomersTextView.setText(total.intValue() + "Client(s)");
         totalCustomersTextView.setVisibility(View.VISIBLE);
       }
       customersChart.setVisibility(View.VISIBLE);

@@ -96,7 +96,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
     dialog.getWindow().setBackgroundDrawableResource(R.drawable.shape_listview_background);
     dialog.setContentView(R.layout.dialog_new_product);
     final TextView titleEditText = dialog.findViewById(R.id.dialog_title);
-    titleEditText.setText("Update Product");
+    titleEditText.setText("Modifier le produit");
 
     // retrieve user input
     final EditText nameEditText = dialog.findViewById(R.id.name_edit_text);
@@ -151,22 +151,22 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
         // Validate the input values
         boolean isValid = true;
         if (TextUtils.isEmpty(name)) {
-          nameEditText.setError("Product name is required");
+          nameEditText.setError("Le nom du produit est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(purchasePriceString)) {
-          purchasePriceEditText.setError("Product purchase price is required");
+          purchasePriceEditText.setError("Le prix d'achat du produit est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(sellingPriceString)) {
-          sellingPriceEditText.setError("Product selling price is required");
+          sellingPriceEditText.setError("Le prix de vente du produit est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(barcode)) {
-          barcodeEditText.setError("Product barcode is required");
+          barcodeEditText.setError("Le code-barres du produit est requis");
           isValid = false;
         }
 
@@ -210,8 +210,8 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
     dialog.setContentView(R.layout.dialog_delete);
     TextView deleteDialogTitle = dialog.findViewById(R.id.dialog_title);
     TextView deleteDialogMessage = dialog.findViewById(R.id.dialog_message);
-    deleteDialogTitle.setText("Delete Product Confirmation");
-    deleteDialogMessage.setText("Do you really want to delete this product?");
+    deleteDialogTitle.setText("Confirmation de suppression du produit");
+    deleteDialogMessage.setText("Voulez-vous vraiment supprimer ce produit ?");
 
     Button cancelButton = dialog.findViewById(R.id.button_cancel);
     cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -254,7 +254,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
       try {
         return apiInstance.getAllProducts();
       } catch (ApiException e) {
-        System.err.println("Exception when calling ProductApi#listProducts");
+        System.err.println("Exception lors de l'appel à ProductApi#listProducts");
         e.printStackTrace();
         return null;
       }
@@ -285,7 +285,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
       try {
         apiInstance.updateProduct((ProductRequestDto) objects[0], (Integer) objects[1]);
       } catch (ApiException e) {
-        System.err.println("Exception when calling ProductApi#createProduct");
+        System.err.println("Exception lors de l'appel à ProductApi#createProduct");
         e.printStackTrace();
       }
       return null;
@@ -296,7 +296,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
       super.onPostExecute(aVoid);
       // Refresh the list of products
       refreshData();
-      Toast.makeText(activity, "Product updated successfully", Toast.LENGTH_SHORT).show();
+      Toast.makeText(activity, "Produit mis à jour avec succès", Toast.LENGTH_SHORT).show();
     }
   }
 
@@ -307,7 +307,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
       try {
         apiInstance.deleteProduct(integers[0]);
       } catch (ApiException e) {
-        System.err.println("Exception when calling ProductApi#createProduct");
+        System.err.println("Exception lors de l'appel à ProductApi#createProduct");
         e.printStackTrace();
       }
       return null;
@@ -318,7 +318,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductResponseDto> {
       super.onPostExecute(aVoid);
       // Refresh the list of products after deleting a product
       refreshData();
-      Toast.makeText(activity, "Product deleted successfully", Toast.LENGTH_SHORT).show();
+      Toast.makeText(activity, "Produit supprimé avec succès", Toast.LENGTH_SHORT).show();
     }
   }
 

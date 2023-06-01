@@ -4,22 +4,22 @@
         <item
             android:id="@+id/dashboard"
             android:icon="@drawable/ic_dashboard"
-            android:title="Dashboard" />
+            android:title="@string/dashboard" />
         <item
             android:id="@+id/products"
             android:icon="@drawable/ic_product"
-            android:title="Products" />
+            android:title="@string/products" />
         <item
             android:id="@+id/customers"
             android:icon="@drawable/ic_corporate"
-            android:title="Customers" />
+            android:title="@string/customers" />
         <item
             android:id="@+id/users"
             android:icon="@drawable/ic_user"
-            android:title="Users" />
+            android:title="@string/users" />
         <item
             android:id="@+id/scanner"
             android:icon="@drawable/ic_barcode_scanner"
-            android:title="Connect scanner" />
+            android:title="@string/connect_scanner" />
     </group>
 </menu>

@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/updateMenuItem"
-        android:title="Update" />
+        android:title="@string/update" />
     <item
         android:id="@+id/deleteMenuItem"
-        android:title="Delete" />
+        android:title="@string/delete" />
 </menu>

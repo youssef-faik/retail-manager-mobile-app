@@ -32,7 +32,7 @@
             android:backgroundTint="@color/purple_bg_color"
             android:drawableLeft="@drawable/ic_add_white"
             android:minHeight="48dp"
-            android:text="Add customer"
+            android:text="@string/add_customer"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="32dp"
-        android:text="There are currently no customers."
+        android:text="@string/there_are_currently_no_customers"
         android:visibility="gone" />
 
     <ListView

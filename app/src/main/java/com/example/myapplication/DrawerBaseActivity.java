@@ -15,8 +15,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myapplication.customer.CustomersActivity;
-import com.example.myapplication.scanner.ScannerActivity;
 import com.example.myapplication.product.ProductsActivity;
+import com.example.myapplication.scanner.ScannerActivity;
 import com.example.myapplication.user.UsersActivity;
 import com.google.android.material.navigation.NavigationView;
 

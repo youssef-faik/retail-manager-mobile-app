@@ -56,7 +56,7 @@
                 android:ems="10"
                 android:inputType="textEmailAddress"
                 android:minHeight="48dp"
-                android:text="@string/email_placeholder"
+                android:text="user@mail.com"
                 tools:ignore="Autofill,LabelFor,VisualLintTextFieldSize" />
 
             <TextView

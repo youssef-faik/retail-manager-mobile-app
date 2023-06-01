@@ -49,8 +49,8 @@ public class ScannerActivity extends DrawerBaseActivity {
 
               scanItemsBtn.setVisibility(View.VISIBLE);
               orLineTextView.setVisibility(View.VISIBLE);
-              connectToCartBtn.setText("Utilize a different cart option.");
-              cartIdTextView.setText("Status : Connected to cart id " + cartId);
+              connectToCartBtn.setText("Utiliser une autre panier.");
+              cartIdTextView.setText("Statut : Connecté à l'identifiant de panier " + cartId);
               Drawable drawable = getResources().getDrawable(R.drawable.ic_circle);
               // Set the tint color
               int tintColor = getResources().getColor(R.color.connected);
@@ -100,7 +100,7 @@ public class ScannerActivity extends DrawerBaseActivity {
       try {
         apiInstance.saveCartItem(cartItemRequestDtos[0]);
       } catch (ApiException e) {
-        System.err.println("Exception when calling ProductApi#createProduct");
+        System.err.println("Exception lors de l'appel à ProductApi#createProduct");
         e.printStackTrace();
       }
       return null;

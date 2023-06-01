@@ -92,7 +92,7 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
     dialog.getWindow().setBackgroundDrawableResource(R.drawable.shape_listview_background);
     dialog.setContentView(R.layout.dialog_new_customer);
     final TextView titleEditText = dialog.findViewById(R.id.dialog_title);
-    titleEditText.setText("Update Customer");
+    titleEditText.setText("Mettre à jour le client");
 
     // retrieve user input
     final EditText nameEditText = dialog.findViewById(R.id.name_edit_text);
@@ -135,20 +135,20 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
         // Validate the input values
         boolean isValid = true;
         if (TextUtils.isEmpty(name)) {
-          nameEditText.setError("Customer name is required");
+          nameEditText.setError("Le nom du client est requis");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(phone)) {
-          phoneEditText.setError("Customer phone is required");
+          phoneEditText.setError("Le numéro de téléphone du client est requis");
           isValid = false;
         } else if (phone.length() != 10) {
-          phoneEditText.setError("Customer phone must be exactly 10 digits long");
+          phoneEditText.setError("Le numéro de téléphone du client doit comporter exactement 10 chiffres");
           isValid = false;
         }
 
         if (TextUtils.isEmpty(address)) {
-          addressEditText.setError("Customer address is required");
+          addressEditText.setError("L'adresse du client est requise");
           isValid = false;
         }
 
@@ -156,10 +156,10 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
         if (isValid) {
           // Create the request body
           CustomerUpdateDto customerUpdateDto = new CustomerUpdateDto();
-          customerUpdateDto.name(name);
-          customerUpdateDto.email(email);
-          customerUpdateDto.phone(phone);
-          customerUpdateDto.address(address);
+          customerUpdateDto.setName(name);
+          customerUpdateDto.setEmail(email);
+          customerUpdateDto.setPhone(phone);
+          customerUpdateDto.setAddress(address);
 
           // Perform API call to update this customer
           UpdateCustomerTask updateCustomerTask = new UpdateCustomerTask();
@@ -182,8 +182,8 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
     dialog.setContentView(R.layout.dialog_delete);
     TextView deleteDialogTitle = dialog.findViewById(R.id.dialog_title);
     TextView deleteDialogMessage = dialog.findViewById(R.id.dialog_message);
-    deleteDialogTitle.setText("Delete Customer Confirmation");
-    deleteDialogMessage.setText("Do you really want to delete this customer?");
+    deleteDialogTitle.setText("Confirmation de suppression du client");
+    deleteDialogMessage.setText("Voulez-vous vraiment supprimer ce client ?");
 
     Button cancelButton = dialog.findViewById(R.id.button_cancel);
     cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -202,12 +202,11 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
 
         // Perform API call to delete this customer
         new DeleteCustomerTask().execute(customer.getIce());
-        Toast.makeText(getContext(), "Customer deleted successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Client supprimé avec succès", Toast.LENGTH_SHORT).show();
         dialog.dismiss();
 
         // Enable the button
         deleteButton.setEnabled(true);
-
       }
     });
 
@@ -263,7 +262,7 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
       try {
         apiInstance.updateCustomer((CustomerUpdateDto) objects[0], (String) objects[1]);
       } catch (ApiException e) {
-        System.err.println("Exception when calling CustomerApi#updateCustomer");
+        System.err.println("Exception lors de l'appel à CustomerApi#updateCustomer");
         e.printStackTrace();
       }
       return null;
@@ -274,7 +273,7 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
       super.onPostExecute(aVoid);
       // Refresh the list of customers after updating a customer
       refreshData();
-      Toast.makeText(activity, "Customer updated successfully", Toast.LENGTH_SHORT);
+      Toast.makeText(activity, "Client mis à jour avec succès", Toast.LENGTH_SHORT).show();
     }
   }
 
@@ -285,7 +284,7 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
       try {
         apiInstance.deleteCustomer(strings[0]);
       } catch (ApiException e) {
-        System.err.println("Exception when calling CustomerApi#createCustomer");
+        System.err.println("Exception lors de l'appel à CustomerApi#deleteCustomer");
         e.printStackTrace();
       }
       return null;
@@ -296,7 +295,7 @@ public class CustomerListAdapter extends ArrayAdapter<CustomerResponseDto> {
       super.onPostExecute(aVoid);
       // Refresh the list of customers after deleting a customer
       refreshData();
-      Toast.makeText(activity, "Customer deleted successfully", Toast.LENGTH_SHORT).show();
+      Toast.makeText(activity, "Client supprimé avec succès", Toast.LENGTH_SHORT).show();
     }
   }
 
