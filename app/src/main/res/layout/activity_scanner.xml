@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/linear_layout_bg_color"
+    android:orientation="vertical"
+    android:paddingTop="96dp"
+    tools:context=".scanner.ScannerActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:text="Scan products effortlessly with your device for swift cart additions."
+        android:textSize="24dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/cartIdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="64dp"
+        android:drawableLeft="@drawable/ic_circle"
+        android:drawablePadding="4dp"
+        android:text="Status : Not connected to any cart."
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:drawableTint="#FF5252" />
+
+    <Button
+        android:id="@+id/connectToCartBtn"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="Connect your cart" />
+
+
+    <TextView
+        android:id="@+id/orLineTexView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="52dp"
+        android:drawablePadding="12dp"
+        android:text="---------------- OR ----------------"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/scanItemsBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/purple_bg_color"
+        android:text="Start adding items to this cart"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -18,9 +18,9 @@
             android:name=".DrawerBaseActivity"
             android:exported="false" />
         <activity
-            android:name=".invoice.InvoicesActivity"
+            android:name=".scanner.ScannerActivity"
             android:exported="false"
-            android:label="@string/invoices_activity_label" />
+            android:label="@string/scanner" />
         <activity
             android:name=".customer.CustomersActivity"
             android:exported="false"
@@ -46,7 +46,14 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true" />
-
+        <activity
+            android:name=".scanner.ScanCartActivity"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity android:name=".scanner.ScanItemsActivity"></activity>
     </application>
+
 
 </manifest>

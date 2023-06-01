@@ -15,7 +15,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.myapplication.customer.CustomersActivity;
-import com.example.myapplication.invoice.InvoicesActivity;
+import com.example.myapplication.scanner.ScannerActivity;
 import com.example.myapplication.product.ProductsActivity;
 import com.example.myapplication.user.UsersActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -78,8 +78,8 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
       startActivity(new Intent(this, CustomersActivity.class));
       overridePendingTransition(0, 0);
       return true;
-    } else if (id == R.id.invoices) {
-      startActivity(new Intent(this, InvoicesActivity.class));
+    } else if (id == R.id.scanner) {
+      startActivity(new Intent(this, ScannerActivity.class));
       overridePendingTransition(0, 0);
       return true;
     }
