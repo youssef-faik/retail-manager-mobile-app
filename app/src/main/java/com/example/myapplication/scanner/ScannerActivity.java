@@ -2,9 +2,6 @@ package com.example.myapplication.scanner;
 
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +27,7 @@ public class ScannerActivity extends DrawerBaseActivity {
   ActivityScannerBinding activityScannerBinding;
 
   TextView cartIdTextView;
+  TextView cartIdTextViewGreen;
   TextView orLineTextView;
   Button connectToCartBtn;
   Button scanItemsBtn;
@@ -45,19 +43,13 @@ public class ScannerActivity extends DrawerBaseActivity {
               cartItemRequestDto.setCartId(cartId);
               cartItemRequestDto.setBarcode("101");
 
-              new SaveCartItemTask().execute(cartItemRequestDto);
-
               scanItemsBtn.setVisibility(View.VISIBLE);
-              orLineTextView.setVisibility(View.VISIBLE);
+              cartIdTextView.setVisibility(View.GONE);
+              cartIdTextViewGreen.setVisibility(View.VISIBLE);
+              cartIdTextViewGreen.setText("Statut : Connecté à l'identifiant de panier " + cartId);
               connectToCartBtn.setText("Utiliser une autre panier.");
-              cartIdTextView.setText("Statut : Connecté à l'identifiant de panier " + cartId);
-              Drawable drawable = getResources().getDrawable(R.drawable.ic_circle);
-              // Set the tint color
-              int tintColor = getResources().getColor(R.color.connected);
-              drawable.setColorFilter(new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN));
-
-              // Set the tinted drawable to the TextView
-              cartIdTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable, null, null, null);
+              connectToCartBtn.setVisibility(View.GONE);
+              new SaveCartItemTask().execute(cartItemRequestDto);
             }
           }
   );
@@ -70,6 +62,7 @@ public class ScannerActivity extends DrawerBaseActivity {
     setContentView(activityScannerBinding.getRoot());
 
     cartIdTextView = findViewById(R.id.cartIdTextView);
+    cartIdTextViewGreen = findViewById(R.id.cartIdTextViewGreen);
     orLineTextView = findViewById(R.id.orLineTexView);
     connectToCartBtn = findViewById(R.id.connectToCartBtn);
     scanItemsBtn = findViewById(R.id.scanItemsBtn);
