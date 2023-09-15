@@ -43,7 +43,7 @@ import io.swagger.client.model.ChartDataDto;
 
 public class DashboardActivity extends DrawerBaseActivity {
   // API IP Address
-  final String IP_ADDRESS = "192.168.1.101";
+  final String IP_ADDRESS = "192.168.122.162";
   ActivityDashboardBinding activityDashboardBinding;
   LineChart customersChart;
   BarChart ordersChart;
